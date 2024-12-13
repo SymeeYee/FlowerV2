@@ -1,5 +1,3 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Cart.aspx.cs" Inherits="AsgV3.WebForm1" %>
-
 <!DOCTYPE html>
 <html>
 <head runat="server">
@@ -39,6 +37,24 @@
         function removeItem(item) {
             item.remove(); // Removes the item from the cart
             updateCart(); // Update cart after removal
+        }
+
+        function increaseQuantity(button) {
+            const quantityInput = button.previousElementSibling;
+            let quantity = parseInt(quantityInput.value) || 0;
+            quantity++;
+            quantityInput.value = quantity;
+            updateCart();
+        }
+
+        function decreaseQuantity(button) {
+            const quantityInput = button.nextElementSibling;
+            let quantity = parseInt(quantityInput.value) || 0;
+            if (quantity > 1) {
+                quantity--;
+                quantityInput.value = quantity;
+                updateCart();
+            }
         }
 
         // Attach event listeners to quantity inputs
@@ -111,9 +127,32 @@
             font-size: 18px;
         }
 
+        .quantity-roller {
+            display: flex;
+            align-items: center;
+        }
+
+        .adjust-button {
+            background-color: #55BC88;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 5px;
+            width: 30px;
+            text-align: center;
+        }
+
+        .adjust-button:hover {
+            background-color: #007BFF;
+        }
+
         .quantity {
             width: 50px;
-            padding: 5px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 0 5px;
         }
 
         .summary {
@@ -126,7 +165,7 @@
             margin-top: 40px;
             font-weight: bold;
             font-size: 18px;
-            text-align: right; /* Align text to the right */
+            text-align: right;
         }
 
         label {
@@ -179,9 +218,6 @@
             font-weight: bold;
             border-bottom: 2px solid #55BC88;
         }
-        .auto-style1 {
-            height: 70px;
-        }
     </style>
 </head>
 <body>
@@ -189,7 +225,7 @@
         <div class="container">
             <div class="cart-section">
                 <h1>Shopping Cart</h1>
-
+                
                 <table>
                     <thead>
                         <tr>
@@ -209,7 +245,11 @@
                             </td>
                             <td class="price">RM <span class="price-value">189</span></td>
                             <td>
-                                <input type="number" class="quantity" value="1" min="1" oninput="updateCart()">
+                                <div class="quantity-roller">
+                                    <span class="adjust-button" onclick="decreaseQuantity(this)">-</span>
+                                    <input type="number" class="quantity" value="1" min="1" oninput="updateCart()" />
+                                    <span class="adjust-button" onclick="increaseQuantity(this)">+</span>
+                                </div>
                             </td>
                             <td>RM <span class="total-price">189.00</span></td>
                             <td>
@@ -224,7 +264,11 @@
                             </td>
                             <td class="price">RM <span class="price-value">139</span></td>
                             <td>
-                                <input type="number" class="quantity" value="1" min="1" oninput="updateCart()">
+                                <div class="quantity-roller">
+                                    <span class="adjust-button" onclick="decreaseQuantity(this)">-</span>
+                                    <input type="number" class="quantity" value="1" min="1" oninput="updateCart()" />
+                                    <span class="adjust-button" onclick="increaseQuantity(this)">+</span>
+                                </div>
                             </td>
                             <td>RM <span class="total-price">139.00</span></td>
                             <td>
@@ -237,26 +281,29 @@
 
             <div class="delivery-section">
                 <h3>Delivery Information</h3>
+                
+                <label for="ddlDestination">Select a Delivery Destination:</label>
+                <asp:DropDownList ID="ddlDestination" runat="server" CssClass="destination-dropdown">
+                    <asp:ListItem Text="Please Pick A Destination" Value="" />
+                    <asp:ListItem Text="Kuala Lumpur" Value="Kuala Lumpur" />
+                    <asp:ListItem Text="Selangor" Value="Selangor" />
+                    <asp:ListItem Text="Penang" Value="Penang" />
+                    <asp:ListItem Text="Johor" Value="Johor" />
+                    <asp:ListItem Text="Kedah" Value="Kedah" />
+                    <asp:ListItem Text="Kelantan" Value="Kelantan" />
+                    <asp:ListItem Text="Melaka" Value="Melaka" />
+                    <asp:ListItem Text="Negeri Sembilan" Value="Negeri Sembilan" />
+                    <asp:ListItem Text="Pahang" Value="Pahang" />
+                    <asp:ListItem Text="Perak" Value="Perak" />
+                    <asp:ListItem Text="Perlis" Value="Perlis" />
+                    <asp:ListItem Text="Terengganu" Value="Terengganu" />
+                </asp:DropDownList>
 
-                <label for="destination">Select a Delivery Destination:</label>
-                <select id="destination">
-                    <option value="">Please Pick A Destination</option>
-                    <option value="Kuala Lumpur">Kuala Lumpur</option>
-                    <option value="Selangor">Selangor</option>
-                    <option value="Penang">Penang</option>
-                    <option value="Johor">Johor</option>
-                    <option value="Kedah">Kedah</option>
-                    <option value="Kelantan">Kelantan</option>
-                    <option value="Melaka">Melaka</option>
-                    <option value="Negeri Sembilan">Negeri Sembilan</option>
-                    <option value="Pahang">Pahang</option>
-                    <option value="Perak">Perak</option>
-                    <option value="Perlis">Perlis</option>
-                    <option value="Terengganu">Terengganu</option>
-                </select>
+                <asp:Label ID="lblDeliveryAddress" runat="server" Text="Delivery Address:"></asp:Label>
+                <asp:TextBox ID="txtDeliveryAddress" runat="server" TextMode="MultiLine" Rows="4" CssClass="textarea-delivery" placeholder="Enter delivery address here"></asp:TextBox>
 
-                <label for="delivery-address">Delivery Address:</label>
-                <input type="text" id="delivery-address" placeholder="Enter delivery address here" class="auto-style1" />
+             
+
 
                 <label for="delivery-date">Select Delivery Date:</label>
                 <input type="date" id="delivery-date" />
@@ -268,21 +315,17 @@
                     <option value="4pm-8pm">4:00 PM - 8:00 PM</option>
                 </select>
 
-                <label for="message">Choose or type your personal card message:</label>
-                <asp:TextBox ID="TextBox1" runat="server" Height="82px" Width="441px" placeholder="Tell the recipient who you are or just leave blank" CssClass="textbox-sender"></asp:TextBox>
-                <br />
-                <br />
+                <asp:Label ID="LblPM" runat="server" Text="Type Your Personal Message:"></asp:Label>
+                <asp:TextBox ID="TxtboxDA" runat="server" TextMode="MultiLine" Rows="4" CssClass="textarea-delivery textbox-sender" placeholder="Type your personal card message"></asp:TextBox>
 
-                <label for="sender-name">Type sender's name:</label>
-                <asp:TextBox ID="TxtboxSender" runat="server" Height="35px" Width="100%" placeholder="Tell the recipient who you are or just leave blank" CssClass="textbox-sender"></asp:TextBox>
-                <br />
-                <br />
+                <asp:Label ID="LblSenderName" runat="server" Text="Type sender's name:"></asp:Label>
+                <asp:TextBox ID="TxtboxSender" runat="server" placeholder="Enter your name here"></asp:TextBox>
 
                 <div class="delivery-summary">
                     <p>Total Items: <span id="item-count">2</span></p>
                     <p>Total Amount to Pay: RM <span id="total-amount">328.00</span></p>
                 </div>
-                <button id="continue">Continue To Delivery Address</button>
+                <button id="continue">Checkout</button>
             </div>
         </div>
     </form>
