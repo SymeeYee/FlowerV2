@@ -135,7 +135,7 @@
             font-weight: bold;
         }
 
-        select, input[type="checkbox"], textarea, button, input[type="date"] {
+        select, input[type="checkbox"], textarea, button, input[type="text"], input[type="date"] {
             width: 100%;
             margin-top: 5px;
             padding: 10px;
@@ -178,6 +178,9 @@
             background-color: #f2f2f2;
             font-weight: bold;
             border-bottom: 2px solid #55BC88;
+        }
+        .auto-style1 {
+            height: 70px;
         }
     </style>
 </head>
@@ -252,12 +255,14 @@
                     <option value="Terengganu">Terengganu</option>
                 </select>
 
+                <label for="delivery-address">Delivery Address:</label>
+                <input type="text" id="delivery-address" placeholder="Enter delivery address here" class="auto-style1" />
+
                 <label for="delivery-date">Select Delivery Date:</label>
                 <input type="date" id="delivery-date" />
 
-                <label for="time-slot">Select Delivery Time Slot:</label>
+                <label for="time-slot">Select Time Slot:</label>
                 <select id="time-slot">
-                    <option value="">Choose a time slot</option>
                     <option value="8am-12pm">8:00 AM - 12:00 PM</option>
                     <option value="1pm-4pm">1:00 PM - 4:00 PM</option>
                     <option value="4pm-8pm">4:00 PM - 8:00 PM</option>
