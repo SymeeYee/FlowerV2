@@ -7,34 +7,46 @@
     <link href="~/css/StyleSheet2.css" rel="stylesheet" />
     <script src="~/AddCart.js"></script>
     <script>
-        function updateSubtotal() {
+        function updateCart() {
             var subtotal = 0;
+            var totalItems = 0;
 
             // Get all cart items
             var cartItems = document.querySelectorAll('.cart-item');
 
             cartItems.forEach(function (item) {
-                var quantity = item.querySelector('.quantity').value;
-                var price = item.querySelector('.price-value').innerText;
-
-                // Calculate the total price for this item
+                var quantity = parseInt(item.querySelector('.quantity').value);
+                var price = parseFloat(item.querySelector('.price-value').innerText);
                 var itemTotal = quantity * price;
 
-                // Add to the subtotal
+                // Update total price for this item
+                item.querySelector('.total-price').innerText = itemTotal.toFixed(2);
+
+                // Update subtotal and total items
                 subtotal += itemTotal;
-                item.querySelector('.total-price').innerText = itemTotal.toFixed(2); // Update total price for each item
+                totalItems += quantity;
             });
 
             // Update the subtotal element
             document.getElementById('subtotal').innerText = subtotal.toFixed(2);
+            // Update item count
+            document.getElementById('item-count').innerText = totalItems;
+        }
+
+        function removeItem(item) {
+            item.remove(); // Removes the item from the cart
+            updateCart(); // Update cart after removal
         }
 
         // Attach event listeners to quantity inputs
         document.addEventListener('DOMContentLoaded', function () {
             var quantityInputs = document.querySelectorAll('.quantity');
             quantityInputs.forEach(function (input) {
-                input.addEventListener('input', updateSubtotal);
+                input.addEventListener('input', updateCart);
             });
+
+            // Update cart on page load
+            updateCart();
         });
     </script>
 
@@ -171,6 +183,7 @@
             <!-- Shopping Cart Section -->
             <div class="cart-section">
                 <h1>Shopping Cart</h1>
+                <p>Total Items: <span id="item-count">0</span></p>
 
                 <table>
                     <thead>
@@ -179,6 +192,7 @@
                             <th>Unit Price</th>
                             <th>Quantity</th>
                             <th>Total Price</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody class="cart-items">
@@ -189,9 +203,12 @@
                             </td>
                             <td class="price">RM <span class="price-value">189</span></td>
                             <td>
-                                <input type="number" class="quantity" value="1" min="1" data-price="189" oninput="updateSubtotal()">
+                                <input type="number" class="quantity" value="1" min="1" data-price="189" oninput="updateCart()">
                             </td>
                             <td>RM <span class="total-price">189</span></td>
+                            <td>
+                                <button type="button" onclick="removeItem(this.closest('.cart-item'))">Remove</button>
+                            </td>
                         </tr>
 
                         <!-- Product 2 -->
@@ -201,9 +218,12 @@
                             </td>
                             <td class="price">RM <span class="price-value">139</span></td>
                             <td>
-                                <input type="number" class="quantity" value="1" min="1" data-price="139" oninput="updateSubtotal()">
+                                <input type="number" class="quantity" value="1" min="1" data-price="139" oninput="updateCart()">
                             </td>
                             <td>RM <span class="total-price">139</span></td>
+                            <td>
+                                <button type="button" onclick="removeItem(this.closest('.cart-item'))">Remove</button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
