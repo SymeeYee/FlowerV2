@@ -1,10 +1,11 @@
 <%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Cart.aspx.cs" Inherits="AsgV3.WebForm1" %>
 
 <!DOCTYPE html>
-
 <html>
 <head runat="server">
     <title>Flower Shop</title>
+    <link href="~/css/StyleSheet2.css" rel="stylesheet" />
+    <script src="~/AddCart.js"></script>
     <script>
         function updateSubtotal() {
             var subtotal = 0;
@@ -144,7 +145,7 @@
             background-color: #007BFF;
         }
 
-        /* Additional Table Styles */
+        /* Table Styles */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -160,6 +161,7 @@
         th {
             background-color: #f2f2f2;
             font-weight: bold;
+            border-bottom: 2px solid #55BC88; /* Adds a horizontal line below the header */
         }
     </style>
 </head>
