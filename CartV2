@@ -1,3 +1,6 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Cart.aspx.cs" Inherits="AsgV3.WebForm1" %>
+
+
 <!DOCTYPE html>
 <html>
 <head runat="server">
@@ -281,8 +284,8 @@
 
             <div class="delivery-section">
                 <h3>Delivery Information</h3>
-                
-                <label for="ddlDestination">Select a Delivery Destination:</label>
+
+                <asp:Label ID="lblMessage" runat="server" Text="Select a Delivery Destination:"></asp:Label>
                 <asp:DropDownList ID="ddlDestination" runat="server" CssClass="destination-dropdown">
                     <asp:ListItem Text="Please Pick A Destination" Value="" />
                     <asp:ListItem Text="Kuala Lumpur" Value="Kuala Lumpur" />
@@ -331,3 +334,4 @@
     </form>
 </body>
 </html>
+
