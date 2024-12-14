@@ -1,0 +1,254 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ContactUs.aspx.cs" Inherits="AsgV3.WebForm2" %>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Contact Us</title>
+    <link href="~/css/StyleSheet1.css" rel="stylesheet" />
+    <style>
+        .contact-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 30px;
+            background-color: #ffffff;
+            border: 1px solid #ccc;
+            margin: 40px auto;
+            width: 80%;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            gap: 40px;
+            position: relative;
+        }
+        .contact-container::before {
+            content: "";
+            position: absolute;
+            width: 2px;
+            background-color: #ccc;
+            top: 10%;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+        .contact-container:hover {
+            background-color: #ffffff;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            transform: scale(1.05);
+            transition: all 0.3s ease;
+        }
+        .contact-info, .contact-form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 45%;
+        }
+        .contact-info h1, .contact-form h2 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        .contact-info p, .contact-info a {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        .contact-info a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+        .support-sections h4 {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #333;
+        }
+        .phone-input-group {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+            background-color: #f9f9f9;
+            margin: 10px 0;
+        }
+        .phone-input-group .country-code-dropdown {
+            border: none;
+            padding: 10px;
+            background-color: #e8e8e8;
+            font-size: 14px;
+            outline: none;
+        }
+        .phone-input-group .phone-input {
+            flex: 1;
+            border: none;
+            padding: 15px;
+            font-size: 16px;
+            outline: none;
+        }
+        .phone-input-group .phone-input::placeholder {
+            color: #aaa;
+        }
+        .form-input, .form-dropdown, .form-textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .form-note {
+            font-size: 12px;
+            color: #666;
+        }
+        .faq-container {
+            margin-right: auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            width: 60%;
+            text-align: center;
+        }
+        .faq-container:hover {
+            background-color: #f0f8ff;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            transform: scale(1.03);
+            transition: all 0.3s ease;
+        }
+        .faq-form h2, .faq-questions h3 {
+            color: #444;
+            margin-bottom: 15px;
+        }
+        .email-box {
+            width: 80%;
+            padding: 10px;
+            margin: 10px auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .submit-button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .submit-button:hover {
+            background-color: #0056b3;
+        }
+        .faq-item h4 {
+            cursor: pointer;
+            color: #007BFF;
+        }
+        .faq-item p {
+            display: none;
+            margin-top: 10px;
+            color: #555;
+        }
+        .faq-item h4:hover {
+            text-decoration: underline;
+        }
+    </style>
+   
+</head>
+<body>
+    <script src="https://www.google.com/recaptcha/api.js" async="async" defer="defer"></script>
+    <form id="form1" runat="server">
+        <div class="contact-container">
+            <div class="contact-info">
+                <h1>Contact Us</h1>
+                <p>To find out how we can help, send us an email, give us a call, or fill out the form.</p>
+                <p><strong><a href="mailto:info@bloomandgrace.com">info@bloomandgrace.com</a></strong></p>
+                <a href="tel:0129693227">012-9693227</a>
+                <div class="support-sections">
+                    <div>
+                        <h3>Customer Support</h3>
+                        <p>Our support staff is on hand anytime, anywhere to answer any questions or issues.</p>
+                    </div>
+                    <div>
+                        <h3>Feedback and Suggestions</h3>
+                        <p>We appreciate your input so that we can keep improving our services.</p>
+                    </div>
+                    <div>
+                        <h3>Media Inquiries</h3>
+                        <p>For media-related questions, email us at <a href="mailto:info@bloomandgrace.com">info@bloomandgrace.com</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form">
+                <h2>Get in Touch</h2>
+                <p>You can reach us anytime</p>
+                <asp:TextBox ID="TxtFirstName" runat="server" CssClass="form-input" placeholder="First name"></asp:TextBox>
+                <asp:TextBox ID="TxtLastName" runat="server" CssClass="form-input" placeholder="Last name"></asp:TextBox>
+                <asp:TextBox ID="TxtEmail" runat="server" CssClass="form-input" placeholder="Your email"></asp:TextBox>
+               
+                <!-- Combined Country Code and Phone Number Input -->
+                <div class="phone-input-group">
+                    <asp:DropDownList ID="DdlCountryCode" runat="server" CssClass="country-code-dropdown">
+                        <asp:ListItem Text="+60" Value="60"></asp:ListItem>
+                        <asp:ListItem Text="+61" Value="61"></asp:ListItem>
+                        <asp:ListItem Text="+62" Value="62"></asp:ListItem>
+                    </asp:DropDownList>
+                    <asp:TextBox ID="TxtPhoneNumber" runat="server" CssClass="phone-input" placeholder="Phone number"></asp:TextBox>
+                </div>
+
+                <asp:TextBox ID="TxtMessage" runat="server" CssClass="form-textarea" TextMode="MultiLine" placeholder="How can we help?" MaxLength="300"></asp:TextBox>
+                <p class="form-note">By contacting us, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
+                
+                <div class="g-recaptcha" data-sitekey="6LdWppsqAAAAAL1Q8bwz9UWh7M7RCdEDoPhA-MsL"></div>
+                <asp:Button ID="BtnSubmit" runat="server" Text="Submit" CssClass="submit-button" OnClick="BtnSubmit_Click" />
+            </div>
+        </div>
+
+        <asp:Panel ID="FAQPanel" runat="server" CssClass="faq-container">
+            <div class="faq-form">
+                <h2>FAQ</h2>
+                <p>Do you have any questions for us? Feel free to ask, we will answer all your questions.</p>
+                <asp:TextBox ID="emailInput" runat="server" CssClass="email-box" placeholder="Enter your email"></asp:TextBox>
+                <asp:Button ID="submitButton" runat="server" Text="Submit" CssClass="submit-button" />
+            </div>
+
+            <div class="faq-questions">
+                <h3>Frequently Asked Questions</h3>
+                <div class="faq-item">
+                    <h4 onclick="toggleAnswer(this)">Which Flowers Should I Buy?</h4>
+                    <p>There are so many beautiful flowers to choose from, so it really depends on personal preferences and the occasion. Here are a few suggestions:
+                        <br /><br /> For a romantic gesture, roses are a classic choice. You can choose from traditional red, or opt for a softer colour like pink or white.
+                        If you're looking for something a bit more unique, consider buying peonies, sunflowers, or lilies.
+                        Other options could be a bouquet of the recipient's favourite flowers or a mixed bouquet with a variety of colours.
+                    </p>
+                </div>
+                <div class="faq-item">
+                    <h4 onclick="toggleAnswer(this)">Do flowers come in a vase?</h4>
+                    <p>Please be informed that not all the products come in a vase and we do not have options to change hand bouquets into a vase arrangement at the moment. Only products pictured to be in a vase come with it.  
+                    Do note that some products are side arrangements and some are round. If you are unsure, feel free to contact us to find out.</p>
+                </div>
+                <div class="faq-item">
+                    <h4 onclick="toggleAnswer(this)">Can you send me a photo of the gift before you send it?</h4>
+                    <p>Our team is hard at work packing gifts to make people's day all around Malaysia. We can't really guarantee this, however, you can always give it a try and let our Customer Service team know, and we will see what we can do!</p>
+                </div>
+                <div class="faq-item">
+                    <h4 onclick="toggleAnswer(this)">How do I know that my flowers were delivered?</h4>
+                    <p>Once our flower courier successfully delivers the item, you will receive a delivery confirmation email to confirm that your flower has been delivered.
+                    Feel free to contact our Customer Service team if you have any questions!</p>
+                </div>
+            </div>
+        </asp:Panel>
+
+        <script>
+            function toggleAnswer(element) {
+                const answer = element.nextElementSibling;
+                if (answer.style.display === "none" || answer.style.display === "") {
+                    answer.style.display = "block";
+                } else {
+                    answer.style.display = "none";
+                }
+            }
+        </script>
+    </form>
+</body>
+</html>
