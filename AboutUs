@@ -1,0 +1,149 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AboutUs.aspx.cs" Inherits="AsgV3.AboutUs" %>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>About Us</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .banner {
+            position: relative;
+            text-align: center;
+        }
+
+        .banner-image {
+            position: relative;
+            text-align: center;
+        }
+
+        .banner-image img {
+            width: 100%;
+            height: 50vh; 
+            object-fit: cover;
+        }
+
+        .banner-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            text-shadow: 
+                2px 2px 4px rgba(0, 0, 0, 0.7),
+                0 0 25px rgba(255, 255, 255, 0.5);
+            transition: transform 0.3s ease; 
+        }
+
+        .banner-text h1, .banner-text p {
+            transition: transform 0.3s ease; 
+        }
+
+        .banner-text:hover h1 {
+            transform: scale(1.1); 
+        }
+
+        .banner-text:hover p {
+            transform: scale(1.05);
+        }
+
+        section {
+            padding: 20px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 3em;
+        }
+
+        h2 {
+            margin: 20px 0 10px; 
+            font-size: 2.5em; 
+        }
+
+        p {
+            margin: 0 0 20px; 
+            font-size: 1.5em;
+        }
+
+        .about-image {
+            width: 100%;
+            height: auto; 
+            margin-top: 20px; 
+            border-radius: 8px; 
+        }
+
+        
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            margin-left: -10px; 
+        }
+
+        .gallery img {
+            width: calc(33.33% - 10px); 
+            height: auto; 
+            margin: 5px; 
+            border-radius: 8px; 
+            object-fit: cover; /
+        }
+
+        @media (max-width: 768px) {
+            .gallery img {
+                width: calc(50% - 10px); 
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery img {
+                width: 100%; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="banner">
+            <div class="banner-image">
+                <img src="images/floweraboutus.png" alt="Flower About Us">
+                <div class="banner-text">
+                    <h1>Bloom & Grace</h1>
+                    <p>Flowers that speak to the heart, reminding us of the beauty and fragility of life's precious moments.</p>
+                </div>
+            </div>
+        </div>
+
+        <section id="about">
+            <h2>Our Story:</h2>
+            <p>Bloom And Grace was born from a shared passion for flowers and a desire to bring beauty and joy into the lives of others. Our team of four, each with unique talents and experiences, has come together to create a haven for floral artistry where every arrangement is crafted with care and intention. At Bloom And Grace, we believe that flowers are more than just blooms – they're expressions of love, joy, and celebration. We're passionate about bringing the beauty of nature into your life, and that starts with sourcing only the freshest, highest-quality flowers from trusted local growers. We hand-select each bloom, ensuring its vibrant colors and delicate fragrance are at their peak. Our skilled florists, with their artistic eye and meticulous attention to detail, then transform these exquisite flowers into stunning arrangements that capture the essence of your special moment. Whether it's a vibrant bouquet for a birthday, a sophisticated centerpiece for a wedding, or a simple gesture of sympathy, we're dedicated to crafting floral masterpieces that speak volumes.</p>
+        </section>
+
+        <section id="gallery">
+            <h2>Gallery</h2>
+            <div class="gallery">
+                <img src="images/fairytale forever.jpg" alt="Gallery Image 1">
+                <img src="images/royal red.jpg" alt="Gallery Image 2">
+                <img src="images/sweet pea.jpg" alt="Gallery Image 3">
+            </div>
+        </section>
+
+        <section id="services">
+            <h2>Our Services</h2>
+            <ul>
+                <li>Bouquets and Custom Floral Arrangements</li>
+                <li>Same-Day Flower Delivery</li>
+                <li>Weddings and Events</li>
+            </ul>
+        </section>
+
+        <section id="journey">
+            <h2>Join Our Journey</h2>
+            <p>We invite you to explore our website and discover the beauty of Bloom And Grace. Browse our collection of stunning arrangements, learn more about our commitment to quality and service, and place your order today. We're confident that you'll find the perfect floral expression for any occasion.</p>
+        </section>
+    </form>
