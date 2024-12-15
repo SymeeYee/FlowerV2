@@ -1,8 +1,6 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AboutUs.aspx.cs" Inherits="AsgV3.AboutUs" %>
+<%@ Page Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="AboutUs.aspx.cs" Inherits="AsgV3.AboutUs" %>
 
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <title>About Us</title>
     <style>
         body {
@@ -78,7 +76,6 @@
             border-radius: 8px; 
         }
 
-        
         .gallery {
             display: flex;
             flex-wrap: wrap;
@@ -96,22 +93,23 @@
 
         @media (max-width: 768px) {
             .gallery img {
-                width: calc(50% - 10px); 
+                width: calc(40% - 10px); 
             }
         }
 
         @media (max-width: 480px) {
             .gallery img {
-                width: 100%; 
+                width: 70%; 
             }
         }
     </style>
-</head>
-<body>
-    <form id="form1" runat="server">
+</asp:Content>
+
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
+    <form id="formid1" runat="server">
         <div class="banner">
             <div class="banner-image">
-                <img src="images/floweraboutus.png" alt="Flower About Us"/>
+                <img src="images/floweraboutus.png" alt="Flower About Us" />
                 <div class="banner-text">
                     <h1>Bloom & Grace</h1>
                     <p>Flowers that speak to the heart, reminding us of the beauty and fragility of life's precious moments.</p>
@@ -127,9 +125,9 @@
         <section id="gallery">
             <h2>Gallery</h2>
             <div class="gallery">
-                <img src="images/fairytale forever.jpg" alt="Gallery Image 1"/>
-                <img src="images/royal red.jpg" alt="Gallery Image 2"/>
-                <img src="images/sweet pea.jpg" alt="Gallery Image 3"/>
+                <img src="images/fairytale forever.jpg" alt="Gallery Image 1" />
+                <img src="images/royal red.jpg" alt="Gallery Image 2" />
+                <img src="images/sweet pea.jpg" alt="Gallery Image 3" />
             </div>
         </section>
 
@@ -147,5 +145,8 @@
             <p>We invite you to explore our website and discover the beauty of Bloom And Grace. Browse our collection of stunning arrangements, learn more about our commitment to quality and service, and place your order today. We're confident that you'll find the perfect floral expression for any occasion.</p>
         </section>
     </form>
-    </body>
-    </html>
+
+   
+    </asp:Content>
+
+ 
