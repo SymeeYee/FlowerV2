@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>FAQS</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            padding: 20px;
+            background-color: #f9f9f9; /* Light background for contrast */
+        }
+        .support-text {
+            width: 20%;
+            margin-right: 20px;
+            background-color: white; /* White background for support section */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+        .right-container {
+            width: 75%;
+            padding: 20px;
+            background-color: white; /* White background for questions */
+            border-radius: 8px;
+            border: 1px solid #ccc; /* Border added to the container */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+        .button {
+            display: inline-block;
+            padding: 8px 16px;
+            background-color: #5DB996;
+            color: white;
+            text-align: center;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+        .question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            color: #5DB996;
+            cursor: pointer;
+            border-bottom: 1px solid #eee; /* Separator line */
+            padding: 10px 0;
+        }
+        .answer {
+            display: none;
+            margin-left: 20px;
+            margin-top: 5px;
+            color: #333; /* Darker text for answers */
+        }
+        .toggle-btn {
+            background: none;
+            border: none;
+            color: #5DB996;
+            font-size: 16px;
+            cursor: pointer;
+            margin-left: 10px;
+            padding: 5px; /* Padding for clickable area */
+        }
+        .search-container {
+            margin-bottom: 20px;
+        }
+        .search-input {
+            padding: 8px;
+            width: 80%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .search-button {
+            padding: 8px 16px;
+            background-color: #5DB996;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="support-text">
+        <h2>Need Support?</h2>
+        <p>At Bloom & Grace, we're dedicated to providing beautiful flowers and exceptional customer service. If you have any questions or need assistance, please click the "Contact Us" button.</p>
+        <a href="#" class="button">Contact Us</a>
+    </div>
+    <div class="right-container">
+        <h2>General Questions</h2>
+        <div class="search-container">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search questions..." />
+            <button class="search-button" onclick="filterQuestions()">Search</button>
+        </div>
+        <div id="faqQuestions">
+            <div class="question" onclick="toggleAnswer('answer1')">
+                <span>Which Flowers Should I Buy?</span>
+                <button class="toggle-btn" onclick="toggleAnswer('answer1'); event.stopPropagation();">+</button>
+            </div>
+            <div class="answer" id="answer1">There are so many beautiful flowers to choose from, so it really depends on personal preferences and the occasion. For a romantic gesture, roses are a classic choice. You can choose from traditional red or opt for a softer color like pink or white. If you're looking for something a bit more unique, consider buying peonies, sunflowers, or lilies.</div>
+
+            <div class="question" onclick="toggleAnswer('answer2')">
+                <span>Do flowers come in a vase?</span>
+                <button class="toggle-btn" onclick="toggleAnswer('answer2'); event.stopPropagation();">+</button>
+            </div>
+            <div class="answer" id="answer2">Please be informed that not all the products come in a vase. Only products pictured to be in a vase come with it. If you're unsure, feel free to contact us to find out.</div>
+
+            <div class="question" onclick="toggleAnswer('answer3')">
+                <span>Can you send me a photo of the gift before you send it?</span>
+                <button class="toggle-btn" onclick="toggleAnswer('answer3'); event.stopPropagation();">+</button>
+            </div>
+            <div class="answer" id="answer3">We can't guarantee this, but you can always give it a try and let our Customer Service team know, and we will see what we can do!</div>
+
+            <div class="question" onclick="toggleAnswer('answer4')">
+                <span>How do I know that my flowers were delivered?</span>
+                <button class="toggle-btn" onclick="toggleAnswer('answer4'); event.stopPropagation();">+</button>
+            </div>
+            <div class="answer" id="answer4">Once our flower courier successfully delivers the item, you will receive a delivery confirmation email to confirm that your flower has been delivered.</div>
+
+            <div class="question" onclick="toggleAnswer('answer5')">
+                <span>Can I cancel my order?</span>
+                <button class="toggle-btn" onclick="toggleAnswer('answer5'); event.stopPropagation();">+</button>
+            </div>
+            <div class="answer" id="answer5">You may cancel your order 24 hours or one (1) day before your intended delivery date and we will process a full refund.</div>
+
+            <h3>Our Flowers</h3>
+            <div class="question" onclick="toggleAnswer('answer6')">
+                <span>What kind of flowers do you offer?</span>
+                <button class="toggle-btn" onclick="toggleAnswer('answer6'); event.stopPropagation();">+</button>
+            </div>
+            <div class="answer" id="answer6">We offer a large variety of flowers and arrangements for many occasions, including Daisies, Sunflowers, Gerberas, Roses, Tulips, and Orchids.</div>
+
+            <div class="question" onclick="toggleAnswer('answer7')">
+                <span>How can I care for my flowers?</span>
+                <button class="toggle-btn" onclick="toggleAnswer('answer7'); event.stopPropagation();">+</button>
+            </div>
+            <div class="answer" id="answer7">Simply refer to our Care Instructions section for more information.</div>
+
+            <div class="question" onclick="toggleAnswer('answer8')">
+                <span>How long do flowers usually last?</span>
+                <button class="toggle-btn" onclick="toggleAnswer('answer8'); event.stopPropagation();">+</button>
+            </div>
+            <div class="answer" id="answer8">Flower Chimp flowers are all freshly designed and arranged, so on average they will last between 5-7 days provided that you follow our care instructions.</div>
+
+            <h3>Delivery</h3>
+            <div class="question" onclick="toggleAnswer('answer9')">
+                <span>What is the delivery fee?</span>
+                <button class="toggle-btn" onclick="toggleAnswer('answer9'); event.stopPropagation();">+</button>
+            </div>
+            <div class="answer" id="answer9">Delivery fee will be calculated at the shipping page. Same day delivery is possible if you place your order before 5:00 PM.</div>
+
+            <div class="question" onclick="toggleAnswer('answer10')">
+                <span>When will the flowers arrive?</span>
+                <button class="toggle-btn" onclick="toggleAnswer('answer10'); event.stopPropagation();">+</button>
+            </div>
+            <div class="answer" id="answer10">We deliver flowers on any day of the week, including Sundays, during business hours until 6:00 PM.</div>
+
+            <div class="question" onclick="toggleAnswer('answer11')">
+                <span>How will the flowers arrive?</span>
+                <button class="toggle-btn" onclick="toggleAnswer('answer11'); event.stopPropagation();">+</button>
+            </div>
+            <div class="answer" id="answer11">Our flowers are delivered by experienced drivers to ensure that they arrive just as designed.</div>
+
+            <div class="question" onclick="toggleAnswer('answer12')">
+                <span>Can you ensure that you hand over the flowers directly to my recipient?</span>
+                <button class="toggle-btn" onclick="toggleAnswer('answer12'); event.stopPropagation();">+</button>
+            </div>
+            <div class="answer" id="answer12">We try to hand over flowers directly, but if the recipient is unavailable, we will pass them to someone else present.</div>
+
+            <h3>Return and Refunds</h3>
+            <div class="question" onclick="toggleAnswer('answer13')">
+                <span>I received the wrong bouquet, can you send me the right one?</span>
+                <button class="toggle-btn" onclick="toggleAnswer('answer13'); event.stopPropagation();">+</button>
+            </div>
+            <div class="answer" id="answer13">If this happens, please contact our Customer Support and we will help resolve the issue.</div>
+        </div>
+    </div>
+    <script>
+        function toggleAnswer(id) {
+            const answer = document.getElementById(id);
+            answer.style.display = (answer.style.display === 'none' || answer.style.display === '') ? 'block' : 'none';
+        }
+
+        function filterQuestions() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const questions = document.querySelectorAll('.question');
+            questions.forEach(question => {
+                const text = question.textContent.toLowerCase();
+                question.style.display = text.includes(input) ? 'flex' : 'none';
+            });
+        }
+    </script>
+</body>
+</html>
