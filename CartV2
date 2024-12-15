@@ -133,29 +133,32 @@
         .quantity-roller {
             display: flex;
             align-items: center;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            padding: 5px;
         }
 
         .adjust-button {
-            background-color: #55BC88;
-            color: white;
+            background-color: transparent;
             border: none;
+            color: #007BFF;
+            font-size: 20px;
             cursor: pointer;
-            padding: 10px;
-            border-radius: 5px;
-            width: 30px;
-            text-align: center;
+            padding: 0 10px;
         }
 
         .adjust-button:hover {
-            background-color: #007BFF;
+            color: #0056b3;
         }
 
         .quantity {
-            width: 50px;
+            width: 40px;
             text-align: center;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            margin: 0 5px;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            color: #333;
         }
 
         .summary {
@@ -244,17 +247,18 @@
                         <tr class="cart-item">
                             <td><input type="checkbox" class="select-item" onchange="updateCart()"></td>
                             <td class="product-name">
-                                Black Forest <span class="tag">Klang Valley Only</span>
+                                <img src="Images/royal red.jpg" alt="Royal Red Flower" style="width: 100px; height: auto; display: block; margin-bottom: 10px;">
+                                Royal Red Flower 
                             </td>
-                            <td class="price">RM <span class="price-value">189</span></td>
+                            <td class="price">RM <span class="price-value">99</span></td>
                             <td>
                                 <div class="quantity-roller">
-                                    <span class="adjust-button" onclick="decreaseQuantity(this)">-</span>
+                                    <button class="adjust-button" onclick="decreaseQuantity(this)">–</button>
                                     <input type="number" class="quantity" value="1" min="1" oninput="updateCart()" />
-                                    <span class="adjust-button" onclick="increaseQuantity(this)">+</span>
+                                    <button class="adjust-button" onclick="increaseQuantity(this)">+</button>
                                 </div>
                             </td>
-                            <td>RM <span class="total-price">189.00</span></td>
+                            <td>RM <span class="total-price">99.00</span></td>
                             <td>
                                 <button type="button" onclick="removeItem(this.closest('.cart-item'))">Remove</button>
                             </td>
@@ -263,17 +267,38 @@
                         <tr class="cart-item">
                             <td><input type="checkbox" class="select-item" onchange="updateCart()"></td>
                             <td class="product-name">
-                                Peach Perfect <span class="tag">Klang Valley Only</span>
+                                <img src="/Images/Red Roses Forever.png" alt="Red Roses" style="width: 100px; height: auto; display: block; margin-bottom: 10px;">
+                                Red Roses Forever 
                             </td>
-                            <td class="price">RM <span class="price-value">139</span></td>
+                            <td class="price">RM <span class="price-value">89</span></td>
                             <td>
                                 <div class="quantity-roller">
-                                    <span class="adjust-button" onclick="decreaseQuantity(this)">-</span>
+                                    <button class="adjust-button" onclick="decreaseQuantity(this)">–</button>
                                     <input type="number" class="quantity" value="1" min="1" oninput="updateCart()" />
-                                    <span class="adjust-button" onclick="increaseQuantity(this)">+</span>
+                                    <button class="adjust-button" onclick="increaseQuantity(this)">+</button>
                                 </div>
                             </td>
-                            <td>RM <span class="total-price">139.00</span></td>
+                            <td>RM <span class="total-price">89.00</span></td>
+                            <td>
+                                <button type="button" onclick="removeItem(this.closest('.cart-item'))">Remove</button>
+                            </td>
+                        </tr>
+                        
+                        <tr class="cart-item">
+                            <td><input type="checkbox" class="select-item" onchange="updateCart()"></td>
+                            <td class="product-name">
+                                <img src="Images/fairytale forever.jpg" alt="Fairytale Forever" style="width: 100px; height: auto; display: block; margin-bottom: 10px;">
+                                Fairytale Forever
+                            </td>
+                            <td class="price">RM <span class="price-value">149</span></td>
+                            <td>
+                                <div class="quantity-roller">
+                                    <button class="adjust-button" onclick="decreaseQuantity(this)">–</button>
+                                    <input type="number" class="quantity" value="1" min="1" oninput="updateCart()" />
+                                    <button class="adjust-button" onclick="increaseQuantity(this)">+</button>
+                                </div>
+                            </td>
+                            <td>RM <span class="total-price">149.00</span></td>
                             <td>
                                 <button type="button" onclick="removeItem(this.closest('.cart-item'))">Remove</button>
                             </td>
@@ -305,9 +330,6 @@
                 <asp:Label ID="lblDeliveryAddress" runat="server" Text="Delivery Address:"></asp:Label>
                 <asp:TextBox ID="txtDeliveryAddress" runat="server" TextMode="MultiLine" Rows="4" CssClass="textarea-delivery" placeholder="Enter delivery address here"></asp:TextBox>
 
-             
-
-
                 <label for="delivery-date">Select Delivery Date:</label>
                 <input type="date" id="delivery-date" />
 
@@ -325,8 +347,8 @@
                 <asp:TextBox ID="TxtboxSender" runat="server" placeholder="Enter your name here"></asp:TextBox>
 
                 <div class="delivery-summary">
-                    <p>Total Items: <span id="item-count">2</span></p>
-                    <p>Total Amount to Pay: RM <span id="total-amount">328.00</span></p>
+                    <p>Total Items: <span id="item-count">3</span></p>
+                    <p>Total Amount to Pay: RM <span id="total-amount">337.00</span></p>
                 </div>
                 <button id="continue">Checkout</button>
             </div>
@@ -334,4 +356,3 @@
     </form>
 </body>
 </html>
-
