@@ -1,9 +1,5 @@
-<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ContactUs.aspx.cs" Inherits="AsgV3.WebForm2" %>
-
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title>Contact Us</title>
+<%@ Page Title="" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="ContactUs.aspx.cs" Inherits="Assg1.WebForm2" %>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <link href="~/css/StyleSheet1.css" rel="stylesheet" />
     <style>
         .contact-container {
@@ -19,6 +15,7 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             gap: 40px;
             position: relative;
+            background-image: url('/images/blurry.jpg');
         }
         .contact-container::before {
             content: "";
@@ -91,7 +88,7 @@
         .phone-input-group .phone-input::placeholder {
             color: #aaa;
         }
-        .form-input, .form-dropdown, .form-textarea {
+        .form-input, .form-textarea {
             width: 100%;
             padding: 10px;
             margin: 10px 0;
@@ -152,29 +149,32 @@
             text-decoration: underline;
         }
     </style>
-   
-</head>
-<body>
+</asp:Content>
+
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <script src="https://www.google.com/recaptcha/api.js" async="async" defer="defer"></script>
     <form id="form1" runat="server">
         <div class="contact-container">
             <div class="contact-info">
                 <h1>Contact Us</h1>
                 <p>To find out how we can help, send us an email, give us a call, or fill out the form.</p>
-                <p><strong><a href="mailto:info@bloomandgrace.com">info@bloomandgrace.com</a></strong></p>
-                <a href="tel:0129693227">012-9693227</a>
+                <p><strong><a href="mailto:info@bloomandgrace.com">✉️ info@bloomandgrace.com</a></strong></p>
+                <a href="tel:0129693227">📞 012-9693227</a>
                 <div class="support-sections">
                     <div>
+                        </br>
                         <h3>Customer Support</h3>
                         <p>Our support staff is on hand anytime, anywhere to answer any questions or issues.</p>
                     </div>
+                    </br>
                     <div>
                         <h3>Feedback and Suggestions</h3>
                         <p>We appreciate your input so that we can keep improving our services.</p>
                     </div>
+                    </br>
                     <div>
                         <h3>Media Inquiries</h3>
-                        <p>For media-related questions, email us at <a href="mailto:info@bloomandgrace.com">info@bloomandgrace.com</a></p>
+                        <p>For media-related questions, email us at <a href="mailto:info@bloomandgrace.com">✉️ info@bloomandgrace.com</a></p>
                     </div>
                 </div>
             </div>
@@ -182,11 +182,16 @@
             <div class="contact-form">
                 <h2>Get in Touch</h2>
                 <p>You can reach us anytime</p>
-                <asp:TextBox ID="TxtFirstName" runat="server" CssClass="form-input" placeholder="First name"></asp:TextBox>
-                <asp:TextBox ID="TxtLastName" runat="server" CssClass="form-input" placeholder="Last name"></asp:TextBox>
-                <asp:TextBox ID="TxtEmail" runat="server" CssClass="form-input" placeholder="Your email"></asp:TextBox>
-               
-                <!-- Combined Country Code and Phone Number Input -->
+                
+                <label for="TxtFirstName">First Name <span style="color: red;">*</span></label>
+                <asp:TextBox ID="TxtFirstName" runat="server" CssClass="form-input" placeholder="First name" required="required"></asp:TextBox>
+                
+                <label for="TxtLastName">Last Name <span style="color: red;">*</span></label>
+                <asp:TextBox ID="TxtLastName" runat="server" CssClass="form-input" placeholder="Last name" required="required"></asp:TextBox>
+                
+                <label for="TxtEmail">✉️ Email <span style="color: red;">*</span></label>
+                <asp:TextBox ID="TxtEmail" runat="server" CssClass="form-input" placeholder="Your email" required="required"></asp:TextBox>
+
                 <div class="phone-input-group">
                     <asp:DropDownList ID="DdlCountryCode" runat="server" CssClass="country-code-dropdown">
                         <asp:ListItem Text="+60" Value="60"></asp:ListItem>
@@ -198,57 +203,12 @@
 
                 <asp:TextBox ID="TxtMessage" runat="server" CssClass="form-textarea" TextMode="MultiLine" placeholder="How can we help?" MaxLength="300"></asp:TextBox>
                 <p class="form-note">By contacting us, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
-                
-                <div class="g-recaptcha" data-sitekey="6LdWppsqAAAAAL1Q8bwz9UWh7M7RCdEDoPhA-MsL"></div>
+
+                <div class="g-recaptcha" data-sitekey="6LdzyqgqAAAAAM37Z6nqoHoKKlPuOkTXDN044aAW"></div>
                 <asp:Button ID="BtnSubmit" runat="server" Text="Submit" CssClass="submit-button" OnClick="BtnSubmit_Click" />
             </div>
         </div>
 
-        <asp:Panel ID="FAQPanel" runat="server" CssClass="faq-container">
-            <div class="faq-form">
-                <h2>FAQ</h2>
-                <p>Do you have any questions for us? Feel free to ask, we will answer all your questions.</p>
-                <asp:TextBox ID="emailInput" runat="server" CssClass="email-box" placeholder="Enter your email"></asp:TextBox>
-                <asp:Button ID="submitButton" runat="server" Text="Submit" CssClass="submit-button" />
-            </div>
-
-            <div class="faq-questions">
-                <h3>Frequently Asked Questions</h3>
-                <div class="faq-item">
-                    <h4 onclick="toggleAnswer(this)">Which Flowers Should I Buy?</h4>
-                    <p>There are so many beautiful flowers to choose from, so it really depends on personal preferences and the occasion. Here are a few suggestions:
-                        <br /><br /> For a romantic gesture, roses are a classic choice. You can choose from traditional red, or opt for a softer colour like pink or white.
-                        If you're looking for something a bit more unique, consider buying peonies, sunflowers, or lilies.
-                        Other options could be a bouquet of the recipient's favourite flowers or a mixed bouquet with a variety of colours.
-                    </p>
-                </div>
-                <div class="faq-item">
-                    <h4 onclick="toggleAnswer(this)">Do flowers come in a vase?</h4>
-                    <p>Please be informed that not all the products come in a vase and we do not have options to change hand bouquets into a vase arrangement at the moment. Only products pictured to be in a vase come with it.  
-                    Do note that some products are side arrangements and some are round. If you are unsure, feel free to contact us to find out.</p>
-                </div>
-                <div class="faq-item">
-                    <h4 onclick="toggleAnswer(this)">Can you send me a photo of the gift before you send it?</h4>
-                    <p>Our team is hard at work packing gifts to make people's day all around Malaysia. We can't really guarantee this, however, you can always give it a try and let our Customer Service team know, and we will see what we can do!</p>
-                </div>
-                <div class="faq-item">
-                    <h4 onclick="toggleAnswer(this)">How do I know that my flowers were delivered?</h4>
-                    <p>Once our flower courier successfully delivers the item, you will receive a delivery confirmation email to confirm that your flower has been delivered.
-                    Feel free to contact our Customer Service team if you have any questions!</p>
-                </div>
-            </div>
-        </asp:Panel>
-
-        <script>
-            function toggleAnswer(element) {
-                const answer = element.nextElementSibling;
-                if (answer.style.display === "none" || answer.style.display === "") {
-                    answer.style.display = "block";
-                } else {
-                    answer.style.display = "none";
-                }
-            }
-        </script>
+        
     </form>
-</body>
-</html>
+</asp:Content>
