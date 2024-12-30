@@ -127,7 +127,7 @@
         }
         .submit-button {
             padding: 10px 20px;
-            background-color: #007BFF;
+            background-color: #5DB996;
             color: #fff;
             border: none;
             border-radius: 5px;
@@ -162,20 +162,24 @@
                 <a href="tel:0129693227">📞 012-9693227</a>
                 <div class="support-sections">
                     <div>
-                        </br>
+                        <br/>
                         <h3>Customer Support</h3>
                         <p>Our support staff is on hand anytime, anywhere to answer any questions or issues.</p>
                     </div>
-                    </br>
+                    <br/>
                     <div>
                         <h3>Feedback and Suggestions</h3>
                         <p>We appreciate your input so that we can keep improving our services.</p>
                     </div>
-                    </br>
+                    <br/>
                     <div>
                         <h3>Media Inquiries</h3>
                         <p>For media-related questions, email us at <a href="mailto:info@bloomandgrace.com">✉️ info@bloomandgrace.com</a></p>
                     </div>
+                    <br />
+                    <br />
+                        <h3>Looking for answers to common questions? Check out our FAQ!</h3>
+                        <h4><a href="https://localhost:44352/WebForm3.aspx">Visit our FAQ Page</a></h4>
                 </div>
             </div>
 
@@ -191,7 +195,8 @@
                 
                 <label for="TxtEmail">✉️ Email <span style="color: red;">*</span></label>
                 <asp:TextBox ID="TxtEmail" runat="server" CssClass="form-input" placeholder="Your email" required="required"></asp:TextBox>
-
+                <br />
+                <label for="Phoneno"> 📞Phone Number <span style="color: red;">*</span></label>
                 <div class="phone-input-group">
                     <asp:DropDownList ID="DdlCountryCode" runat="server" CssClass="country-code-dropdown">
                         <asp:ListItem Text="+60" Value="60"></asp:ListItem>
@@ -200,15 +205,44 @@
                     </asp:DropDownList>
                     <asp:TextBox ID="TxtPhoneNumber" runat="server" CssClass="phone-input" placeholder="Phone number"></asp:TextBox>
                 </div>
-
+                
+                <label for="TxtMsg">✉️ Leave Your Message Here <span style="color: red;">*</span></label>
                 <asp:TextBox ID="TxtMessage" runat="server" CssClass="form-textarea" TextMode="MultiLine" placeholder="How can we help?" MaxLength="300"></asp:TextBox>
-                <p class="form-note">By contacting us, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
+                
+                <div id="fileUploads">
+                    <label for="FileUpload1">Upload File 1 (JPG, PNG, PDF):</label>
+                    <asp:FileUpload ID="FileUpload1" runat="server" CssClass="form-input" />
+                </div>
 
+                <asp:Button ID="BtnAddFile" runat="server" Text="Add More Files" CssClass="submit-button" OnClientClick="return addFileUpload();" />
+
+               <br />
+               <br />
                 <div class="g-recaptcha" data-sitekey="6LdzyqgqAAAAAM37Z6nqoHoKKlPuOkTXDN044aAW"></div>
                 <asp:Button ID="BtnSubmit" runat="server" Text="Submit" CssClass="submit-button" OnClick="BtnSubmit_Click" />
             </div>
         </div>
-
-        
     </form>
+
+    <script type="text/javascript">
+        let fileCount = 1; // Track the number of file uploads
+
+        function addFileUpload() {
+            if (fileCount < 3) { // Limit to 3 uploads
+                fileCount++;
+                const fileUploadsDiv = document.getElementById('fileUploads');
+
+                const newFileUpload = document.createElement('div');
+                newFileUpload.innerHTML = `
+                    <label for="FileUpload${fileCount}">Upload File ${fileCount} (JPG, PNG, PDF):</label>
+                    <input type="file" id="FileUpload${fileCount}" name="FileUpload${fileCount}" class="form-input" />
+                `;
+
+                fileUploadsDiv.appendChild(newFileUpload);
+            } else {
+                alert("You can only upload a maximum of 3 files.");
+            }
+            return false; // Prevent postback
+        }
+    </script>
 </asp:Content>
