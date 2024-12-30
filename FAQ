@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-    <title>FAQS</title>
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style>
         body {
             font-family: Arial, sans-serif;
-            display: flex;
             padding: 20px;
             background-color: #f9f9f9; /* Light background for contrast */
         }
@@ -16,6 +12,7 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            float: left; /* Align to the left */
         }
         .right-container {
             width: 75%;
@@ -24,6 +21,8 @@
             border-radius: 8px;
             border: 1px solid #ccc; /* Border added to the container */
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            float: left; /* Align to the left */
+             margin-bottom: 35px;
         }
         .button {
             display: inline-block;
@@ -79,8 +78,9 @@
             margin-left: 10px;
         }
     </style>
-</head>
-<body>
+</asp:Content>
+
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div class="support-text">
         <h2>Need Support?</h2>
         <p>At Bloom & Grace, we're dedicated to providing beautiful flowers and exceptional customer service. If you have any questions or need assistance, please click the "Contact Us" button.</p>
@@ -190,5 +190,4 @@
             });
         }
     </script>
-</body>
-</html>
+</asp:Content>
