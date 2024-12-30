@@ -1,4 +1,4 @@
-<%@ Page Title="About Us | Bloom & Grace" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="AboutUs.aspx.cs" Inherits="Assg1.Master" %>
+<%@ Page Title="Bloom & Grace | About Us" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="AboutUs.aspx.cs" Inherits="Assg1.Master" %>
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
@@ -81,6 +81,42 @@
             }
         }
 
+        .services-section {
+            display: flex;
+            justify-content: space-around;
+            padding: 40px 20px;
+            background-color: #f0f0f0; /* Light grey background */
+            border-radius: 8px; /* Round the corners */
+            margin-top: 40px; /* Spacing above the section */
+        }
+
+        .service-card {
+            text-align: center;
+            width: 30%; /* Adjust width according to your layout */
+            padding: 15px;
+            background-color: white; /* White background for cards */
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+        }
+
+        .service-card .icon {
+            margin-bottom: 15px;
+        }
+
+        .service-card img {
+            width: 50px; /* Icon size */
+            height: auto; /* Maintain aspect ratio */
+        }
+
+        .service-card h3 {
+            margin: 10px 0;
+        }
+
+        .service-card p {
+            color: #666; /* Grey text for descriptions */
+        }
+
         .team-section {
             display: flex;
             justify-content: space-around;
@@ -140,6 +176,34 @@
         </div>
     </section>
 
+    <section id="before-our-story">
+        <div class="services-section">
+        <h2>Our Mission</h2>
+        
+            <div class="service-card">
+                <div class="icon">
+                    <img src="images/fast-delivery.png" alt="Fast Shipping" />
+                </div>
+                <h3>Fast Shipping</h3>
+                <p>Quick delivery, every time.</p>
+            </div>
+            <div class="service-card">
+                <div class="icon">
+                    <img src="images/24-hours-support.png" alt="24/7 Support" />
+                </div>
+                <h3>24/7 Support</h3>
+                <p>We're here to help, any day.</p>
+            </div>
+            <div class="service-card">
+                <div class="icon">
+                    <img src="images/plant.png" alt="Stay Fresh For Days" />
+                </div>
+                <h3>Stay Ahead For Days</h3>
+                <p>Guaranteed freshness.</p>
+            </div>
+        </div>
+    </section>
+
     <section id="about">
         <h2>Our Story:</h2>
         <p>Bloom & Grace was born from a shared passion for flowers and a desire to bring beauty and joy into the lives of others. Our team of four, each with unique talents and experiences, has come together to create a haven for floral artistry where every arrangement is crafted with care and intention. At Bloom & Grace, we believe that flowers are more than just blooms – they're expressions of love, joy, and celebration. We're passionate about bringing the beauty of nature into your life, and that starts with sourcing only the freshest, highest-quality flowers from trusted local growers...</p>
@@ -181,7 +245,6 @@
                 <p>Make Bloom & Grace a part of your special moments.</p>
                 <a href="#">Sign Up Now</a>
             </div>
-
         </div>
     </section>
 </asp:Content>
