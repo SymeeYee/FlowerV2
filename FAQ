@@ -1,3 +1,6 @@
+<%@ Page Title="Bloom & Grace | FAQ" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="WebForm3.aspx.cs" Inherits="Assg1.WebForm3" %>
+
+
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <style>
         body {
@@ -22,7 +25,7 @@
             border: 1px solid #ccc; /* Border added to the container */
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
             float: left; /* Align to the left */
-             margin-bottom: 35px;
+            margin-bottom: 35px;
         }
         .button {
             display: inline-block;
@@ -59,24 +62,29 @@
             margin-left: 10px;
             padding: 5px; /* Padding for clickable area */
         }
-        .search-container {
-            margin-bottom: 20px;
-        }
-        .search-input {
-            padding: 8px;
-            width: 80%;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .search-button {
-            padding: 8px 16px;
-            background-color: #5DB996;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-left: 10px;
-        }
+        .find-container {
+    display: flex; /* Use flexbox for layout */
+    justify-content: center; /* Center items horizontally */
+    margin-bottom: 20px;
+  }
+
+  .find-input {
+    padding: 15px; /* Increased padding for a bigger input */
+    width: 100%; /* Increased width for a longer input */
+    font-size: 15px; /* Increased font size */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .find-button {
+    padding: 15px 30px; /* Increased padding for a bigger button */
+    background-color: #5DB996; /* Button color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px; /* Increased font size for button */
+  }
     </style>
 </asp:Content>
 
@@ -84,15 +92,16 @@
     <div class="support-text">
         <h2>Need Support?</h2>
         <p>At Bloom & Grace, we're dedicated to providing beautiful flowers and exceptional customer service. If you have any questions or need assistance, please click the "Contact Us" button.</p>
-        <a href="#" class="button">Contact Us</a>
+        <a href="https://localhost:44352/ContactUs.aspx" class="button">Contact Us</a>
     </div>
     <div class="right-container">
-        <h2>General Questions</h2>
-        <div class="search-container">
-            <input type="text" class="search-input" id="searchInput" placeholder="Search questions..." />
-            <button class="search-button" onclick="filterQuestions()">Search</button>
+        
+        <div class="find-container">
+            <input type="text" class="find-input" id="findInput" placeholder="Search questions..." />
+            <button class="find-button" onclick="filterQuestions()">Search</button>
         </div>
         <div id="faqQuestions">
+            <h2>General Questions</h2>
             <div class="question" onclick="toggleAnswer('answer1')">
                 <span>Which Flowers Should I Buy?</span>
                 <button class="toggle-btn" onclick="toggleAnswer('answer1'); event.stopPropagation();">+</button>
@@ -104,7 +113,7 @@
                 <button class="toggle-btn" onclick="toggleAnswer('answer2'); event.stopPropagation();">+</button>
             </div>
             <div class="answer" id="answer2">Please be informed that not all the products come in a vase. Only products pictured to be in a vase come with it. If you're unsure, feel free to contact us to find out.</div>
-
+            
             <div class="question" onclick="toggleAnswer('answer3')">
                 <span>Can you send me a photo of the gift before you send it?</span>
                 <button class="toggle-btn" onclick="toggleAnswer('answer3'); event.stopPropagation();">+</button>
@@ -166,7 +175,7 @@
                 <button class="toggle-btn" onclick="toggleAnswer('answer12'); event.stopPropagation();">+</button>
             </div>
             <div class="answer" id="answer12">We try to hand over flowers directly, but if the recipient is unavailable, we will pass them to someone else present.</div>
-
+            <br />
             <h3>Return and Refunds</h3>
             <div class="question" onclick="toggleAnswer('answer13')">
                 <span>I received the wrong bouquet, can you send me the right one?</span>
@@ -182,7 +191,7 @@
         }
 
         function filterQuestions() {
-            const input = document.getElementById('searchInput').value.toLowerCase();
+            const input = document.getElementById('findInput').value.toLowerCase();
             const questions = document.querySelectorAll('.question');
             questions.forEach(question => {
                 const text = question.textContent.toLowerCase();
