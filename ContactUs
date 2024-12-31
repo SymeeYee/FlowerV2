@@ -210,7 +210,8 @@
                 <asp:TextBox ID="TxtMessage" runat="server" CssClass="form-textarea" TextMode="MultiLine" placeholder="How can we help?" MaxLength="300"></asp:TextBox>
                 
                 <div id="fileUploads">
-                    <label for="FileUpload1">Upload File 1 (JPG, PNG, PDF):</label>
+
+                    <label for="FileUpload1">Upload File 1 (JPG, PNG, PDF)[Max 3 upload file]:</label>
                     <asp:FileUpload ID="FileUpload1" runat="server" CssClass="form-input" />
                 </div>
 
@@ -244,5 +245,63 @@
             }
             return false; // Prevent postback
         }
+
+        function submitForm(event) {
+            event.preventDefault();
+
+            // Collect form data
+            const firstName = document.getElementById('TxtFirstName').value;
+            const lastName = document.getElementById('TxtLastName').value;
+            const email = document.getElementById('TxtEmail').value;
+            const countryCodeDdl = document.getElementById('DdlCountryCode');
+            Console.log(countryCodeDdl.options[countryCodeDdl.selectedIndex].value);
+            const countryCode = countryCodeDdl.options[countryCodeDdl.selectedIndex].value
+            const phoneNumber = document.getElementById('TxtPhoneNumber').value;
+            const message = document.getElementById('TxtMessage').value;
+            const fileInput = document.getElementById('FileUpload1');
+
+            // Validate reCAPTCHA
+            const recaptchaResponse = grecaptcha.getResponse();
+            if (!recaptchaResponse) {
+                alert('Please complete the reCAPTCHA.');
+                return;
+            }
+
+            // Create form data object
+            const formData = new FormData();
+            formData.append('FirstName', firstName);
+            formData.append('LastName', lastName);
+            formData.append('Email', email);
+            formData.append('PhoneNumber', `${countryCode}${phoneNumber}`);
+            formData.append('Message', message);
+            formData.append('RecaptchaResponse', recaptchaResponse);
+
+            // Add file uploads (support up to 3 files)
+            const fileInputs = document.querySelectorAll('[id^=FileUpload]');
+            fileInputs.forEach((input, index) => {
+                if (input.files.length > 0) {
+                    formData.append(`FilePath${index + 1}`, input.files[0]);
+                }
+            });
+
+            // Send data via AJAX
+            fetch('BtnSubmit_Click', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Form submitted successfully!');
+                    } else {
+                        alert('Failed to submit form. Please try again.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Attach event listener to the submit button
+        document.getElementById('BtnSubmit').addEventListener('click', submitForm);
+
     </script>
 </asp:Content>
