@@ -1,73 +1,96 @@
-using System;
-using System.Data;
-using System.Data.SqlClient;
 using System.Configuration;
+using System.Data.SqlClient;
+using System;
 
 namespace Assg1
 {
     public partial class AdminContactUs : System.Web.UI.Page
     {
+        private string connectionString = ConfigurationManager.ConnectionStrings["ContactUsDB"].ConnectionString;
+        private int totalResponded = 0;
+        private int totalUnresponded = 0;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                LoadFeedbackData();
+                LoadFeedback();
             }
         }
 
-        private void LoadFeedbackData()
+        private void LoadFeedback()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["YourConnectionStringName"].ConnectionString;
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            string query = "SELECT FeedbackID, Message, Responded FROM Feedback";
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                connection.Open();
-                string query = "SELECT FeedbackID, Responded FROM dbo.Feedback"; // Adjust query as needed
-                SqlCommand command = new SqlCommand(query, connection);
-
-                using (SqlDataReader reader = command.ExecuteReader())
+                using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    int totalResponded = 0;
-                    int totalUnresponded = 0;
+                    conn.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
 
                     while (reader.Read())
                     {
-                        int feedbackID = reader.GetInt32(0);
-                        bool responded = reader.GetBoolean(1);
+                        int id = reader.GetInt32(0);
+                        string feedbackText = reader.GetString(1);
+                        bool isResponded = reader.GetBoolean(2);
 
-                        // Update counts
-                        if (responded)
+                        if (isResponded)
                         {
+                            // Create responded feedback item
+                            respondedList.InnerHtml += $"<div class='feedback-item'>ID: {id} <button onclick=\"undoMarkAsRespond('{id}', this)\">Undo Mark As Respond</button></div>";
                             totalResponded++;
                         }
                         else
                         {
+                            // Create unresponded feedback item
+                            unrespondedList.InnerHtml += $"<div class='feedback-item'>ID: {id} <button onclick=\"markAsResponded('{id}', this)\">Mark As Respond</button></div>";
                             totalUnresponded++;
                         }
-
-                        // Create a new row in the feedback table
-                        feedbackTable.InnerHtml += $"<tr><td>{feedbackID}</td></tr>";
                     }
+                }
+            }
 
-                    // Display totals
-                    totalRespondedLabel.InnerText = $"Total Responded: {totalResponded}";
-                    // Update percentage display
-                    UpdateFeedbackSummary(totalResponded, totalUnresponded);
+            // Update displayed counts
+            respondedCount.InnerText = totalResponded.ToString();
+            unrespondedCount.InnerText = totalUnresponded.ToString();
+            UpdateChart();
+        }
+
+        // Function to mark feedback as responded
+        public void MarkAsResponded(int feedbackId)
+        {
+            string query = "UPDATE Feedback SET Responded = 1 WHERE FeedbackID = @Id";
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Id", feedbackId);
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
                 }
             }
         }
 
-        private void UpdateFeedbackSummary(int totalResponded, int totalUnresponded)
+        // Function to undo marking feedback as responded
+        public void UndoMarkAsRespond(int feedbackId)
         {
-            int totalFeedback = totalResponded + totalUnresponded;
-            if (totalFeedback > 0)
+            string query = "UPDATE Feedback SET Responded = 0 WHERE FeedbackID = @Id";
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                double respondedPercentage = (double)totalResponded / totalFeedback * 100;
-                double unrespondedPercentage = (double)totalUnresponded / totalFeedback * 100;
-
-                // Update UI elements
-                feedbackSummary.InnerText = $"{respondedPercentage:F2}%"; // Responded
-                unrespondedSummary.InnerText = $"{unrespondedPercentage:F2}%"; // Unresponded
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Id", feedbackId);
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
             }
+        }
+
+        // Function to update the chart
+        private void UpdateChart()
+        {
+            // Logic to perform any updates needed for the chart (if applicable)
+            // This can also be triggered after each feedback update
         }
     }
 }
