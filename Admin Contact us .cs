@@ -20,7 +20,7 @@ namespace Assg1
 
         private void LoadFeedback()
         {
-            string query = "SELECT FeedbackID, Message, Responded FROM Feedback";
+            string query = "SELECT FeedbackID, FirstName, LastName, Email, PhoneNumber, Message, FilePath1, FilePath2, FilePath3, TimeFeedback, Responded FROM Feedback";
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 using (SqlCommand cmd = new SqlCommand(query, conn))
@@ -31,19 +31,25 @@ namespace Assg1
                     while (reader.Read())
                     {
                         int id = reader.GetInt32(0);
-                        string feedbackText = reader.GetString(1);
-                        bool isResponded = reader.GetBoolean(2);
+                        string firstName = reader.GetString(1);
+                        string lastName = reader.GetString(2);
+                        string email = reader.GetString(3);
+                        string phoneNumber = reader.GetString(4);
+                        string feedbackText = reader.GetString(5);
+                        string filePath1 = reader.IsDBNull(6) ? null : reader.GetString(6);
+                        string filePath2 = reader.IsDBNull(7) ? null : reader.GetString(7);
+                        string filePath3 = reader.IsDBNull(8) ? null : reader.GetString(8);
+                        DateTime timeFeedback = reader.GetDateTime(9);
+                        bool isResponded = reader.GetBoolean(10);
 
                         if (isResponded)
                         {
-                            // Create responded feedback item
-                            respondedList.InnerHtml += $"<div class='feedback-item'>ID: {id} <button onclick=\"undoMarkAsRespond('{id}', this)\">Undo Mark As Respond</button></div>";
+                            respondedList.InnerHtml += $"<div class='feedback-item' onclick=\"showDetails({id}, '{firstName}', '{lastName}', '{email}', '{phoneNumber}', '{feedbackText}', '{filePath1}', '{filePath2}', '{filePath3}', '{timeFeedback}')\">ID: {id} <button onclick=\"undoMarkAsRespond('{id}', this)\">Undo Mark As Respond</button></div>";
                             totalResponded++;
                         }
                         else
                         {
-                            // Create unresponded feedback item
-                            unrespondedList.InnerHtml += $"<div class='feedback-item'>ID: {id} <button onclick=\"markAsResponded('{id}', this)\">Mark As Respond</button></div>";
+                            unrespondedList.InnerHtml += $"<div class='feedback-item' onclick=\"showDetails({id}, '{firstName}', '{lastName}', '{email}', '{phoneNumber}', '{feedbackText}', '{filePath1}', '{filePath2}', '{filePath3}', '{timeFeedback}')\">ID: {id} <button onclick=\"markAsResponded('{id}', this)\">Mark As Respond</button></div>";
                             totalUnresponded++;
                         }
                     }
