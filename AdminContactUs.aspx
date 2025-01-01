@@ -57,6 +57,7 @@
         }
         .feedback-item {
             margin: 5px 0;
+            cursor: pointer;
         }
         .responded {
             color: #28a745;
@@ -75,6 +76,14 @@
         }
         button:hover {
             background-color: #4A9A7E;
+        }
+        #feedbackDetails {
+            display: none;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
         }
     </style>
 </head>
@@ -118,6 +127,10 @@
     </div>
 </div>
 
+<div id="feedbackDetails">
+    <!-- Feedback details will be displayed here -->
+</div>
+
 <script>
     let totalResponded = 0;
     let totalUnresponded = 0;
@@ -128,7 +141,7 @@
 
         const feedbackItem = button.parentNode;
         const respondedList = document.getElementById("respondedList");
-        respondedList.innerHTML += '<div class="feedback-item">ID: ' + feedbackId + ' <button onclick="undoMarkAsRespond(\'' + feedbackId + '\', this)">Undo Mark As Respond</button></div>';
+        respondedList.innerHTML += '<div class="feedback-item" onclick="showDetails(' + feedbackId + ')">ID: ' + feedbackId + ' <button onclick="undoMarkAsRespond(\'' + feedbackId + '\', this)">Undo Mark As Respond</button></div>';
         feedbackItem.remove();
 
         document.getElementById("respondedCount").innerText = totalResponded;
@@ -143,13 +156,33 @@
 
         const feedbackItem = button.parentNode;
         const unrespondedList = document.getElementById("unrespondedList");
-        unrespondedList.innerHTML += '<div class="feedback-item">ID: ' + feedbackId + ' <button onclick="markAsResponded(\'' + feedbackId + '\', this)">Mark As Respond</button></div>';
+        unrespondedList.innerHTML += '<div class="feedback-item" onclick="showDetails(' + feedbackId + ')">ID: ' + feedbackId + ' <button onclick="markAsResponded(\'' + feedbackId + '\', this)">Mark As Respond</button></div>';
         feedbackItem.remove();
 
         document.getElementById("respondedCount").innerText = totalResponded;
         document.getElementById("unrespondedCount").innerText = totalUnresponded;
 
         updateChart();
+    }
+
+    function showDetails(id, firstName, lastName, email, phoneNumber, message, filePath1, filePath2, filePath3, timeFeedback) {
+        const detailsHtml = `
+            <h3>Feedback Details</h3>
+            <p><strong>ID:</strong> ${id}</p>
+            <p><strong>First Name:</strong> ${firstName}</p>
+            <p><strong>Last Name:</strong> ${lastName}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Phone Number:</strong> ${phoneNumber}</p>
+            <p><strong>Message:</strong> ${message}</p>
+            <p><strong>File Path 1:</strong> ${filePath1 ? `<a href="${filePath1}" target="_blank">View File</a>` : 'N/A'}</p>
+            <p><strong>File Path 2:</strong> ${filePath2 ? `<a href="${filePath2}" target="_blank">View File</a>` : 'N/A'}</p>
+            <p><strong>File Path 3:</strong> ${filePath3 ? `<a href="${filePath3}" target="_blank">View File</a>` : 'N/A'}</p>
+            <p><strong>Time Feedback:</strong> ${new Date(timeFeedback).toLocaleString()}</p>
+        `;
+
+        const detailsContainer = document.getElementById("feedbackDetails");
+        detailsContainer.innerHTML = detailsHtml;
+        detailsContainer.style.display = 'block'; // Make sure to show the details
     }
 
     function updateChart() {
