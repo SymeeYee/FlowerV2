@@ -179,7 +179,7 @@
                     <br />
                     <br />
                         <h3>Looking for answers to common questions? Check out our FAQ!</h3>
-                        <h4><a href="https://localhost:44352/WebForm3.aspx">Visit our FAQ Page</a></h4>
+                        <h4><a href="/Faq.aspx">Visit our FAQ Page</a></h4>
                 </div>
             </div>
 
