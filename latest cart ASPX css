@@ -1,10 +1,9 @@
-<%@ Page Title="Bloom & Grace | Cart" Language="C#" AutoEventWireup="true" CodeBehind="Cart.aspx.cs" Inherits="Assg1.Cart" %>
+<%@ Page Title="Bloom & Grace | Cart" Language="C#" MasterPageFile="~/Site1.Master" AutoEventWireup="true" CodeBehind="Cart.aspx.cs" Inherits="Assg1.Cart" %>
 
-<!DOCTYPE html>
-<html>
-<head runat="server">
+
+
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <title>Flower Shop</title>
-    <link href="~/css/StyleSheet2.css" rel="stylesheet" />
     <script>
         // Set the increment value (default to 1, can be changed to 2 or more)
         const incrementValue = 1;
@@ -81,12 +80,7 @@
                 console.error('Input element not found');
             }
         });
-
-
     </script>
-
-
-
     <style>
         body {
             font-family: sans-serif;
@@ -234,99 +228,99 @@
             border-bottom: 2px solid #55BC88;
         }
     </style>
-</head>
-<body>
+</asp:Content>
+
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <form id="form1" runat="server">
-        <div class="container">
-            <div class="cart-section">
-                <h1>Shopping Cart</h1>
+    <div class="container">
+        <div class="cart-section">
+            <h1>Shopping Cart</h1>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Select</th>
+                        <th>Product</th>
+                        <th>Unit Price</th>
+                        <th>Quantity</th>
+                        <th>Total Price</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
                 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Select</th>
-                            <th>Product</th>
-                            <th>Unit Price</th>
-                            <th>Quantity</th>
-                            <th>Total Price</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    
-                    <tbody class="cart-items">
-                        <asp:Repeater ID="CartRepeater" runat="server">
-                            <ItemTemplate>
-                                <tr class="cart-item">
-                                    <td><input type="checkbox" class="select-item" onchange="updateCart()"></td>
-                                    <td class="product-name">
-                                        <img src="<%# Eval("ImageURL") %>" alt="<%# Eval("ProductName") %>" style="width: 100px; height: auto; display: block; margin-bottom: 10px;">
-                                    </td>
-                                    <td class="price">RM <span class="price-value"><%# Eval("DiscountPrice", "{0:0.00}") %></span></td>
-                                    <td>
-                                        <div class="quantity-roller">
-                                            <button type="button" class="adjust-button" onclick="decreaseQuantity(this)">–</button>
-                                            <input type="number" class="quantity" value="<%# Eval("Quantity") %>" min="1" oninput="updateCart()" />
-                                            <button type="button" class="adjust-button" onclick="increaseQuantity(this)">+</button>
-                                        </div>
-                                    </td>
+                <tbody class="cart-items">
+                    <asp:Repeater ID="CartRepeater" runat="server">
+                        <ItemTemplate>
+                            <tr class="cart-item">
+                                <td><input type="checkbox" class="select-item" onchange="updateCart()"></td>
+                                <td class="product-name">
+                                    <img src="<%# Eval("ImageURL") %>" alt="<%# Eval("ProductName") %>" style="width: 100px; height: auto; display: block; margin-bottom: 10px;">
+                                </td>
+                                <td class="price">RM <span class="price-value"><%# Eval("DiscountPrice", "{0:0.00}") %></span></td>
+                                <td>
+                                    <div class="quantity-roller">
+                                        <button type="button" class="adjust-button" onclick="decreaseQuantity(this)">–</button>
+                                        <input type="number" class="quantity" value="<%# Eval("Quantity") %>" min="1" oninput="updateCart()" />
+                                        <button type="button" class="adjust-button" onclick="increaseQuantity(this)">+</button>
+                                    </div>
+                                </td>
 
-                                    <td>RM <span class="total-price"><%# Eval("DiscountPrice", "{0:0.00}") %></span></td>
-                                    <td>
-                                        <button type="button" onclick="removeItem(this.closest('.cart-item'))">Remove</button>
-                                    </td>
-                                </tr>
-                            </ItemTemplate>
-                        </asp:Repeater>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="delivery-section">
-                <h3>Delivery Information</h3>
-
-                <asp:Label ID="lblMessage" runat="server" Text="Select a Delivery Destination:"></asp:Label>
-                <asp:DropDownList ID="ddlDestination" runat="server" CssClass="destination-dropdown">
-                    <asp:ListItem Text="Please Pick A Destination" Value="" />
-                    <asp:ListItem Text="Kuala Lumpur" Value="Kuala Lumpur" />
-                    <asp:ListItem Text="Selangor" Value="Selangor" />
-                    <asp:ListItem Text="Penang" Value="Penang" />
-                    <asp:ListItem Text="Johor" Value="Johor" />
-                    <asp:ListItem Text="Kedah" Value="Kedah" />
-                    <asp:ListItem Text="Kelantan" Value="Kelantan" />
-                    <asp:ListItem Text="Melaka" Value="Melaka" />
-                    <asp:ListItem Text="Negeri Sembilan" Value="Negeri Sembilan" />
-                    <asp:ListItem Text="Pahang" Value="Pahang" />
-                    <asp:ListItem Text="Perak" Value="Perak" />
-                    <asp:ListItem Text="Perlis" Value="Perlis" />
-                    <asp:ListItem Text="Terengganu" Value="Terengganu" />
-                </asp:DropDownList>
-
-                <asp:Label ID="lblDeliveryAddress" runat="server" Text="Delivery Address:"></asp:Label>
-                <asp:TextBox ID="txtDeliveryAddress" runat="server" TextMode="MultiLine" Rows="4" CssClass="textarea-delivery" placeholder="Enter delivery address here"></asp:TextBox>
-
-                <label for="delivery-date">Select Delivery Date:</label>
-                <input type="date" id="delivery-date" />
-
-                <label for="time-slot">Select Time Slot:</label>
-                <select id="time-slot">
-                    <option value="8am-12pm">8:00 AM - 12:00 PM</option>
-                    <option value="1pm-4pm">1:00 PM - 4:00 PM</option>
-                    <option value="4pm-8pm">4:00 PM - 8:00 PM</option>
-                </select>
-
-                <asp:Label ID="LblPM" runat="server" Text="Type Your Personal Message:"></asp:Label>
-                <asp:TextBox ID="TxtboxDA" runat="server" TextMode="MultiLine" Rows="4" CssClass="textarea-delivery textbox-sender" placeholder="Type your personal card message"></asp:TextBox>
-
-                <asp:Label ID="LblSenderName" runat="server" Text="Type sender's name:"></asp:Label>
-                <asp:TextBox ID="TxtboxSender" runat="server" placeholder="Enter your name here"></asp:TextBox>
-
-                <div class="delivery-summary">
-                    <p>Total Items: <span id="item-count">3</span></p>
-                    <p>Total Amount to Pay: RM <span id="total-amount">337.00</span></p>
-                </div>
-                <button id="continue">Checkout</button>
-            </div>
+                                <td>RM <span class="total-price"><%# Eval("DiscountPrice", "{0:0.00}") %></span></td>
+                                <td>
+                                    <button type="button" onclick="removeItem(this.closest('.cart-item'))">Remove</button>
+                                </td>
+                            </tr>
+                        </ItemTemplate>
+                    </asp:Repeater>
+                </tbody>
+            </table>
         </div>
-    </form>
-</body>
-</html>
+
+        <div class="delivery-section">
+            <h3>Delivery Information</h3>
+
+            <asp:Label ID="lblMessage" runat="server" Text="Select a Delivery Destination:"></asp:Label>
+            <asp:DropDownList ID="ddlDestination" runat="server" CssClass="destination-dropdown">
+                <asp:ListItem Text="Please Pick A Destination" Value="" />
+                <asp:ListItem Text="Kuala Lumpur" Value="Kuala Lumpur" />
+                <asp:ListItem Text="Selangor" Value="Selangor" />
+                <asp:ListItem Text="Penang" Value="Penang" />
+                <asp:ListItem Text="Johor" Value="Johor" />
+                <asp:ListItem Text="Kedah" Value="Kedah" />
+                <asp:ListItem Text="Kelantan" Value="Kelantan" />
+                <asp:ListItem Text="Melaka" Value="Melaka" />
+                <asp:ListItem Text="Negeri Sembilan" Value="Negeri Sembilan" />
+                <asp:ListItem Text="Pahang" Value="Pahang" />
+                <asp:ListItem Text="Perak" Value="Perak" />
+                <asp:ListItem Text="Perlis" Value="Perlis" />
+                <asp:ListItem Text="Terengganu" Value="Terengganu" />
+            </asp:DropDownList>
+
+            <asp:Label ID="lblDeliveryAddress" runat="server" Text="Delivery Address:"></asp:Label>
+            <asp:TextBox ID="txtDeliveryAddress" runat="server" TextMode="MultiLine" Rows="4" CssClass="textarea-delivery" placeholder="Enter delivery address here"></asp:TextBox>
+
+            <label for="delivery-date">Select Delivery Date:</label>
+            <input type="date" id="delivery-date" />
+
+            <label for="time-slot">Select Time Slot:</label>
+            <select id="time-slot">
+                <option value="8am-12pm">8:00 AM - 12:00 PM</option>
+                <option value="1pm-4pm">1:00 PM - 4:00 PM</option>
+                <option value="4pm-8pm">4:00 PM - 8:00 PM</option>
+            </select>
+
+            <asp:Label ID="LblPM" runat="server" Text="Type Your Personal Message:"></asp:Label>
+            <asp:TextBox ID="TxtboxDA" runat="server" TextMode="MultiLine" Rows="4" CssClass="textarea-delivery textbox-sender" placeholder="Type your personal card message"></asp:TextBox>
+
+            <asp:Label ID="LblSenderName" runat="server" Text="Type sender's name:"></asp:Label>
+            <asp:TextBox ID="TxtboxSender" runat="server" placeholder="Enter your name here"></asp:TextBox>
+
+            <div class="delivery-summary">
+                <p>Total Items: <span id="item-count">3</span></p>
+                <p>Total Amount to Pay: RM <span id="total-amount">337.00</span></p>
+            </div>
+            <button id="continue">Checkout</button>
+        </div>
+    </div>
+</form>
+</asp:Content>
