@@ -111,7 +111,7 @@ namespace Assg1
 
             if (!IsValidPhoneNumber(TxtPhoneNumber.Text))
             {
-                ShowAlert("Invalid phone number.");
+                ShowAlert("Phone number must not be empty and must be between 10 and 12 digits.");
                 return false;
             }
 
@@ -185,7 +185,7 @@ namespace Assg1
                     try
                     {
                         cmd.ExecuteNonQuery();
-                        
+
                     }
                     catch (SqlException ex)
                     {
@@ -268,7 +268,11 @@ namespace Assg1
 
         private bool IsValidPhoneNumber(string phoneNumber)
         {
-            return phoneNumber.All(char.IsDigit) && phoneNumber.Length >= 7;
+            // Check if the phone number is not empty, contains only digits, and has a length between 10 and 12
+            return !string.IsNullOrWhiteSpace(phoneNumber) &&
+                   phoneNumber.All(char.IsDigit) &&
+                   phoneNumber.Length >= 10 &&
+                   phoneNumber.Length <= 12;
         }
 
         protected void DdlCountryCode_SelectedIndexChanged(object sender, EventArgs e)
