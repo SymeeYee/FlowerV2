@@ -161,6 +161,7 @@
 
 
     function markAsResponded(feedbackId, button) {
+        
         totalResponded++;
         totalUnresponded--;
 
@@ -173,6 +174,7 @@
         document.getElementById("unrespondedCount").innerText = totalUnresponded;
 
         updateChart();
+        PageMethods.MarkAsResponded(feedbackId);
     }
 
     function undoMarkAsRespond(feedbackId, button) {
@@ -187,7 +189,7 @@
         document.getElementById("respondedCount").innerText = totalResponded;
         document.getElementById("unrespondedCount").innerText = totalUnresponded;
         updateChart();
-
+        PageMethods.UndoMarkAsRespond(feedbackId);
     }
 
     function showDetails(id, firstName, lastName, email, phoneNumber, message, filePath1, filePath2, filePath3, timeFeedback) {
