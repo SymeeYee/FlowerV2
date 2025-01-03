@@ -97,6 +97,9 @@
 </head>
 <body>
 
+<form id="form1" runat="server">
+        <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" />
+
 <div class="title">Contact Us Feedback Dashboard</div>
 
 <div class="container">
@@ -114,7 +117,7 @@
         <circle id="progressCircle" r="54" cx="60" cy="60" fill="none" stroke="#28a745" stroke-width="12" stroke-dasharray="339.292" stroke-dashoffset="339.292" />
         
         <!-- Percentage Text -->
-        <text id="percentageText" x="60" y="60" text-anchor="middle" alignment-baseline="middle">0%</text>
+        <text id="percentageText" x="60" y="60" text-anchor="middle" alignment-baseline="middle" runat="server">0%</text>
     </svg>
 </div>
 
@@ -147,11 +150,15 @@
 <div id="feedbackDetails">
     <!-- Feedback details will be displayed here -->
 </div>
+</form>
 
 <script>
-    let totalResponded = 0;
+    const respondedList = document.getElementById("respondedList");
+    let totalResponded = respondedList.querySelectorAll('div').length;
     const unrespondedList = document.getElementById("unrespondedList");
     let totalUnresponded = unrespondedList.querySelectorAll('div').length;
+    updateChart();
+
 
     function markAsResponded(feedbackId, button) {
         totalResponded++;
@@ -179,8 +186,8 @@
 
         document.getElementById("respondedCount").innerText = totalResponded;
         document.getElementById("unrespondedCount").innerText = totalUnresponded;
-
         updateChart();
+
     }
 
     function showDetails(id, firstName, lastName, email, phoneNumber, message, filePath1, filePath2, filePath3, timeFeedback) {
@@ -203,29 +210,33 @@
         detailsContainer.style.display = 'block'; // Make sure to show the details
     }
 
-   
+
 
     function updateChart() {
         const totalFeedback = totalResponded + totalUnresponded;
         const respondedPercentage = totalFeedback ? (totalResponded / totalFeedback) * 100 : 0;
         const unrespondedPercentage = 100 - respondedPercentage;
 
-        document.getElementById("percentageText").innerText = Math.round(respondedPercentage) + "%";
+
 
         const radius = 54;
-        const circumference = 2 * Math.PI * radius;
+        const circumference = 2 * 3.2 * radius;
 
         // Update the green (responded) circle
         const greenOffset = circumference - (respondedPercentage / 100 * circumference);
         document.getElementById("progressCircle").style.strokeDashoffset = greenOffset;
 
         // Update the red (unresponded) circle
-        const redOffset = circumference - (unrespondedPercentage / 100 * circumference);
+        const redOffset = circumference - (unrespondedPercentage / -100 * circumference);
         document.getElementById("unrespondedCircle").style.strokeDashoffset = redOffset;
 
         // Update summary text
         document.getElementById("totalResponded").innerText = 'Total Responded Feedback: ' + totalResponded;
         document.getElementById("totalUnresponded").innerText = 'Total Unresponded Feedback: ' + totalUnresponded;
+        document.getElementById("percentageText").textContent = Math.round(respondedPercentage) + "%";
+        if (respondedPercentage == 100) {
+            document.getElementById("percentageText").textContent = "Done";
+        }
     }
 
 </script>
