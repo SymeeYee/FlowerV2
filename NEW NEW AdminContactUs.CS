@@ -96,7 +96,7 @@ namespace Assg1
         // Function to update the chart
         private void UpdateChart()
         {
-        
+
         }
     }
 }
