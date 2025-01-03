@@ -1,116 +1,279 @@
+using System;
 using System.Configuration;
 using System.Data.SqlClient;
-using System;
-using System.Xml.Linq;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Web;
+using System.Web.Script.Serialization;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace Assg1
 {
-    public partial class AdminContactUs : System.Web.UI.Page
+    public partial class WebForm2 : System.Web.UI.Page
     {
-        private string connectionString = ConfigurationManager.ConnectionStrings["ContactUsDB"].ConnectionString;
-        private int totalResponded = 0;
-        private int totalUnresponded = 0;
-
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
+            //using (SqlConnection conn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["ContactUsDB"].ConnectionString))
+            //{
+            //    conn.Open();
+            //    string query = "INSERT INTO Feedback (FirstName, LastName, Email, PhoneNumber, Message, FilePath1, FilePath2, FilePath3, TimeFeedback, Responded, TimeResponded) " +
+            //       "VALUES (@FirstName, @LastName, @Email, @PhoneNumber, @Message, @FilePath1, @FilePath2, @FilePath3, @TimeFeedback, @Responded, @TimeResponded)";
+
+            //    using (SqlCommand cmd = new SqlCommand(query, conn))
+            //    {
+
+            //        cmd.Parameters.AddWithValue("@FirstName", "John");
+            //        cmd.Parameters.AddWithValue("@LastName", "Doe");
+            //        cmd.Parameters.AddWithValue("@Email", "johndoe@example.com");
+            //        cmd.Parameters.AddWithValue("@PhoneNumber", "1234567890");
+            //        cmd.Parameters.AddWithValue("@Message", "This is a test message.");
+            //        cmd.Parameters.AddWithValue("@FilePath1", DBNull.Value);
+            //        cmd.Parameters.AddWithValue("@FilePath2", DBNull.Value);
+            //        cmd.Parameters.AddWithValue("@FilePath3", DBNull.Value);
+            //        cmd.Parameters.AddWithValue("@TimeFeedback", DateTime.Now); // Adds current timestamp
+            //        cmd.Parameters.AddWithValue("@Responded", false); // Assuming not responded yet
+            //        cmd.Parameters.AddWithValue("@TimeResponded", DBNull.Value); // NULL since no response yet
+
+            //        cmd.ExecuteNonQuery();
+            //        // This method is called when the page loads
+            //    }
+            //}
+        }
+
+        protected void BtnSubmit_Click(object sender, EventArgs e)
+        {
+            // Step 1: Validate reCAPTCHA
+            string recaptchaResponse = Request["g-recaptcha-response"];
+            string secretKey = "6LdzyqgqAAAAAA-Y662v9S11MhLCjRfpA9knX3Ia"; // Replace with your actual secret key
+
+            if (!ValidateRecaptcha(recaptchaResponse, secretKey))
             {
-                LoadFeedback();
+                ShowAlert("Please complete the reCAPTCHA correctly.");
+                return;
+            }
+
+            // Step 2: Validate inputs
+            if (!ValidateInputs())
+            {
+                return; // Validation errors already displayed
+            }
+
+            // Step 3: Process file uploads
+            string[] filePaths = ProcessFileUploads();
+
+            // Step 4: Get the database connection string
+            string connectionString = ConfigurationManager.ConnectionStrings["ContactUsDB"].ConnectionString;
+
+            try
+            {
+                // Step 5: Save feedback to the database
+                SaveFeedback(connectionString, filePaths);
+                ShowAlert("Form submitted successfully!");
+            }
+            catch (Exception ex)
+            {
+                ShowAlert($"Error: {ex.Message}");
             }
         }
 
-        private void LoadFeedback()
+        private bool ValidateRecaptcha(string recaptchaResponse, string secretKey)
         {
-            // Reset counters and clear HTML
-            totalResponded = 0;
-            totalUnresponded = 0;
-            respondedList.InnerHtml = "";
-            unrespondedList.InnerHtml = "";
-
-            string query = "SELECT FeedbackID, FirstName, LastName, Email, PhoneNumber, Message, FilePath1, FilePath2, FilePath3, TimeFeedback, Responded FROM Feedback";
-            using (SqlConnection conn = new SqlConnection(connectionString))
+            if (string.IsNullOrEmpty(recaptchaResponse))
             {
-                using (SqlCommand cmd = new SqlCommand(query, conn))
-                {
-                    conn.Open();
-                    SqlDataReader reader = cmd.ExecuteReader();
+                return false;
+            }
 
-                    while (reader.Read())
+            string apiUrl = $"https://www.google.com/recaptcha/api/siteverify?secret={secretKey}&response={recaptchaResponse}";
+            using (var client = new WebClient())
+            {
+                var jsonResponse = client.DownloadString(apiUrl);
+                var serializer = new JavaScriptSerializer();
+                dynamic jsonData = serializer.Deserialize<dynamic>(jsonResponse);
+                return jsonData["success"] == true;
+            }
+        }
+
+        private bool ValidateInputs()
+        {
+            if (string.IsNullOrWhiteSpace(TxtFirstName.Text) || string.IsNullOrWhiteSpace(TxtLastName.Text))
+            {
+                ShowAlert("First name and last name are required.");
+                return false;
+            }
+
+            if (!IsValidEmail(TxtEmail.Text))
+            {
+                ShowAlert("Invalid email address.");
+                return false;
+            }
+
+            if (!IsValidPhoneNumber(TxtPhoneNumber.Text))
+            {
+                ShowAlert("Invalid phone number.");
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(TxtMessage.Text))
+            {
+                ShowAlert("Message cannot be empty.");
+                return false;
+            }
+
+            return true;
+        }
+
+        private string[] ProcessFileUploads()
+        {
+            string[] filePaths = new string[3];
+            string uploadDir = Server.MapPath("~/Uploads/");
+
+            for (int i = 1; i <= 3; i++)
+            {
+                var fileUploadControl = (FileUpload)FindControl("FileUpload" + i);
+                if (fileUploadControl != null && fileUploadControl.HasFile)
+                {
+                    string fileName = Path.GetFileName(fileUploadControl.FileName);
+                    string filePath = Path.Combine(uploadDir, fileName);
+
+                    try
                     {
-                        RenderFeedbackItem(reader);
+                        fileUploadControl.SaveAs(filePath);
+                        filePaths[i - 1] = filePath;
+                    }
+                    catch (Exception ex)
+                    {
+                        ShowAlert($"Error uploading file {fileName}: {ex.Message}");
                     }
                 }
             }
 
-            // Update displayed counts
-            respondedCount.InnerText = totalResponded.ToString();
-            unrespondedCount.InnerText = totalUnresponded.ToString();
-            UpdateChart();
+            return filePaths;
         }
 
-        private void RenderFeedbackItem(SqlDataReader reader)
+        private void SaveFeedback(string connectionString, string[] filePaths)
         {
-            int id = reader.GetInt32(0);
-            string firstName = reader.GetString(1);
-            string lastName = reader.GetString(2);
-            string email = reader.GetString(3);
-            string phoneNumber = reader.GetString(4);
-            string feedbackText = reader.GetString(5);
-            string filePath1 = reader.IsDBNull(6) ? null : reader.GetString(6);
-            string filePath2 = reader.IsDBNull(7) ? null : reader.GetString(7);
-            string filePath3 = reader.IsDBNull(8) ? null : reader.GetString(8);
-            DateTime timeFeedback = reader.GetDateTime(9);
-            bool isResponded = reader.GetBoolean(10);
-
-            string feedbackHtml = $"<div class='feedback-item' onclick=\"showDetails({id}, '{firstName}', '{lastName}', '{email}', '{phoneNumber}', '{feedbackText}', '{filePath1}', '{filePath2}', '{filePath3}', '{timeFeedback}')\">ID: {id}";
-
-            if (isResponded)
+            using (SqlConnection conn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["ContactUsDB"].ConnectionString))
             {
-                feedbackHtml += $" <button onclick=\"undoMarkAsRespond('{id}', this)\">Undo Mark As Respond</button></div>";
-                respondedList.InnerHtml += feedbackHtml;
-                totalResponded++;
-            }
-            else
-            {
-                feedbackHtml += $" <button onclick=\"markAsResponded('{id}', this)\">Mark As Respond</button></div>";
-                unrespondedList.InnerHtml += feedbackHtml;
-                totalUnresponded++;
-            }
-        }
+                conn.Open();
 
-        // Function to mark feedback as responded
-        public void MarkAsResponded(int feedbackId)
-        {
-            string query = "UPDATE Feedback SET Responded = 1 WHERE FeedbackID = @Id";
-            ExecuteQuery(query, feedbackId);
-            LoadFeedback(); // Reload feedback data
-        }
+                bool turnOnIdentity = TurnOnIdentity(conn);
 
-        // Function to undo marking feedback as responded
-        public void UndoMarkAsRespond(int feedbackId)
-        {
-            string query = "UPDATE Feedback SET Responded = 0 WHERE FeedbackID = @Id";
-            ExecuteQuery(query, feedbackId);
-            LoadFeedback(); // Reload feedback data
-        }
+                if (!turnOnIdentity) return;
 
-        private void ExecuteQuery(string query, int feedbackId)
-        {
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
+                string query = "INSERT INTO Feedback (FeedbackID, FirstName, LastName, Email, PhoneNumber, Message, FilePath1, FilePath2, FilePath3, TimeFeedback, Responded) " +
+                                "VALUES (@FeedbackID, @FirstName, @LastName, @Email, @PhoneNumber, @Message, @FilePath1, @FilePath2, @FilePath3, @TimeFeedback, @Responded)";
+
                 using (SqlCommand cmd = new SqlCommand(query, conn))
                 {
-                    cmd.Parameters.AddWithValue("@Id", feedbackId);
-                    conn.Open();
+                    int feedbackNumber = GetNextFeedbackNumber(conn);
+
+                    cmd.Parameters.AddWithValue("@FeedbackID", feedbackNumber);
+                    cmd.Parameters.AddWithValue("@FirstName", TxtFirstName.Text.Trim());
+                    cmd.Parameters.AddWithValue("@LastName", TxtLastName.Text.Trim());
+                    cmd.Parameters.AddWithValue("@Email", TxtEmail.Text.Trim());
+                    cmd.Parameters.AddWithValue("@PhoneNumber", TxtPhoneNumber.Text.Trim());
+                    cmd.Parameters.AddWithValue("@Message", TxtMessage.Text.Trim());
+                    cmd.Parameters.AddWithValue("@FilePath1", filePaths[0] ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@FilePath2", filePaths[1] ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@FilePath3", filePaths[2] ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@TimeFeedback", DateTime.Now); // Adds current timestamp
+                    cmd.Parameters.AddWithValue("@Responded", false); // Assuming not responded yet
+                    cmd.Parameters.AddWithValue("@TimeResponded", DBNull.Value); // NULL since no response yet
+
+                    try
+                    {
+                        cmd.ExecuteNonQuery();
+
+                    }
+                    catch (SqlException ex)
+                    {
+                        ShowAlert($"Database error: {ex.Message}");
+                    }
+                }
+
+                bool turnOffIdentity = TurnOffIdentity(conn);
+
+                if (!turnOffIdentity) return;
+            }
+        }
+
+        private bool TurnOnIdentity(SqlConnection conn)
+        {
+            string openIdInsQuery = "SET IDENTITY_INSERT Feedback ON";
+
+            using (SqlCommand cmd = new SqlCommand(openIdInsQuery, conn))
+            {
+
+                try
+                {
                     cmd.ExecuteNonQuery();
+                    return true;
+                }
+                catch (SqlException ex)
+                {
+                    ShowAlert($"Database error: {ex.Message}");
+                    return false;
                 }
             }
         }
 
-        // Function to update the chart
-        private void UpdateChart()
+        private bool TurnOffIdentity(SqlConnection conn)
         {
-            // Update chart logic here
+            string offIdInsQuery = "SET IDENTITY_INSERT Feedback OFF";
+
+            using (SqlCommand cmd = new SqlCommand(offIdInsQuery, conn))
+            {
+
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                    return true;
+                }
+                catch (SqlException ex)
+                {
+                    ShowAlert($"Database error: {ex.Message}");
+                    return false;
+                }
+            }
+        }
+
+        private int GetNextFeedbackNumber(SqlConnection conn)
+        {
+            string query = "SELECT ISNULL(MAX(FeedbackID), 0) + 1 FROM Feedback";
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                return (int)cmd.ExecuteScalar();
+            }
+        }
+
+        private void ShowAlert(string message)
+        {
+            ClientScript.RegisterStartupScript(this.GetType(), "alert", $"alert('{message}');", true);
+        }
+
+        private bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private bool IsValidPhoneNumber(string phoneNumber)
+        {
+            return phoneNumber.All(char.IsDigit) && phoneNumber.Length >= 7;
+        }
+
+        protected void DdlCountryCode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Handle country code selection change if necessary
         }
     }
 }
