@@ -168,18 +168,18 @@
 
     function showDetails(id, firstName, lastName, email, phoneNumber, message, filePath1, filePath2, filePath3, timeFeedback) {
         const detailsHtml = `
-            <h3>Feedback Details</h3>
-            <p><strong>ID:</strong> ${id}</p>
-            <p><strong>First Name:</strong> ${firstName}</p>
-            <p><strong>Last Name:</strong> ${lastName}</p>
-            <p><strong>Email:</strong> ${email}</p>
-            <p><strong>Phone Number:</strong> ${phoneNumber}</p>
-            <p><strong>Message:</strong> ${message}</p>
-            <p><strong>File Path 1:</strong> ${filePath1 ? `<a href="${filePath1}" target="_blank">View File</a>` : 'N/A'}</p>
-            <p><strong>File Path 2:</strong> ${filePath2 ? `<a href="${filePath2}" target="_blank">View File</a>` : 'N/A'}</p>
-            <p><strong>File Path 3:</strong> ${filePath3 ? `<a href="${filePath3}" target="_blank">View File</a>` : 'N/A'}</p>
-            <p><strong>Time Feedback:</strong> ${new Date(timeFeedback).toLocaleString()}</p>
-        `;
+        <h3>Feedback Details</h3>
+        <p><strong>ID:</strong> ${id}</p>
+        <p><strong>First Name:</strong> ${firstName}</p>
+        <p><strong>Last Name:</strong> ${lastName}</p>
+        <p><strong>Email:</strong> <a href='mailto:${email}' style='color: blue; text-decoration: underline;'>${email}</a></p>
+        <p><strong>Phone Number:</strong> <a href='tel:${phoneNumber}' style='color: blue; text-decoration: underline;'>${phoneNumber}</a></p></p>
+        <p><strong>Message:</strong> ${message}</p>
+        <p><strong>File Path 1:</strong> ${filePath1 ? `<a href="${filePath1}" target="_blank">View File</a>` : 'N/A'}</p>
+        <p><strong>File Path 2:</strong> ${filePath2 ? `<a href="${filePath2}" target="_blank">View File</a>` : 'N/A'}</p>
+        <p><strong>File Path 3:</strong> ${filePath3 ? `<a href="${filePath3}" target="_blank">View File</a>` : 'N/A'}</p>
+        <p><strong>Time Feedback:</strong> ${new Date(timeFeedback).toLocaleString()}</p>
+    `;
 
         const detailsContainer = document.getElementById("feedbackDetails");
         detailsContainer.innerHTML = detailsHtml;
