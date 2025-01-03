@@ -8,7 +8,6 @@ using System.Web;
 using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Web.Services;
 using System.IO;
 using Newtonsoft.Json;
 
@@ -22,8 +21,8 @@ namespace Assg1
             if (!IsPostBack)
             {
                 // Remove soon
-                Session["custID"] = "1001";
-
+                Session["custID"] = "1";
+                BackButton.Visible = true;
                 // Get customer ID from session
                 string strCustId = Session["custID"].ToString();
 
@@ -34,10 +33,10 @@ namespace Assg1
 
                 // Use DISTINCT to avoid duplicates
                 string query = $@"
-            SELECT C.CartID, C.ProductID, C.Quantity, C.Size , P.DiscountPrice, P.ImageURL, P.ProductName, P.Color
+            SELECT C.CartID, C.Quantity, C.Size , C.Color, C.ProductName, C.TotalPrice, P.DiscountPrice, P.ImageURL
             FROM dbo.Cart C
-            JOIN dbo.Products P ON P.ProductID = C.ProductID
-            WHERE C.CustomerID = {custId};
+            JOIN dbo.Products P ON P.ProductName = C.ProductName
+            WHERE C.CustomerId = {custId};
         ";
 
                 using (SqlConnection conn = new SqlConnection(connectionString))
@@ -90,27 +89,23 @@ namespace Assg1
         //        LogError(ex);
         //Response.Write($"<script>alert('Error loading products: {ex.Message}');</script>");
         //    }
-        protected void btnSubmit_Click(object sender, EventArgs e)
-        {
-            string selectedDestination = ddlDestination.SelectedValue;
-            if (!string.IsNullOrEmpty(selectedDestination))
-            {
-                lblMessage.Text = "You have selected: " + selectedDestination;
-            }
-            else
-            {
-                lblMessage.Text = "Please select a destination.";
-            }
+        //protected void btnSubmit_Click(object sender, EventArgs e)
+        //{
+        //    string selectedDestination = ddlDestination.SelectedValue;
+        //    if (!string.IsNullOrEmpty(selectedDestination))
+        //    {
+        //        lblMessage.Text = "You have selected: " + selectedDestination;
+        //    }
+        //    else
+        //    {
+        //        lblMessage.Text = "Please select a destination.";
+        //    }
 
-        }
+        //}
         protected void BackButton_Click(object sender, EventArgs e)
         {
-            
-            Response.Redirect("ProductDetails.aspx");
+            // Navigate back to the product listing page
+            Response.Redirect("ProductListing.aspx");
         }
-       
-            }
-
-
     }
-
+}
