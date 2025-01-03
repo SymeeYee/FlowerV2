@@ -133,7 +133,8 @@
 
 <script>
     let totalResponded = 0;
-    let totalUnresponded = 0;
+    const unrespondedList = document.getElementById("unrespondedList");
+    let totalUnresponded = unrespondedList.querySelectorAll('div').length;
 
     function markAsResponded(feedbackId, button) {
         totalResponded++;
