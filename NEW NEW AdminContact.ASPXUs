@@ -108,7 +108,7 @@
         <circle r="54" cx="60" cy="60" fill="none" stroke="#e0e0e0" stroke-width="12" />
         
         <!-- Unresponded Feedback Section (Red) -->
-        <circle id="unrespondedCircle" r="54" cx="60" cy="60" fill="none" stroke="#dc3545" stroke-width="12" stroke-dasharray="339.292" stroke-dashoffset="0" />
+        <circle id="unrespondedCircle" r="54" cx="60" cy="60" fill="none" stroke="#dc3545" stroke-width="12" stroke-dasharray="339.292" stroke-dashoffset="339.292" />
         
         <!-- Responded Feedback Section (Green) -->
         <circle id="progressCircle" r="54" cx="60" cy="60" fill="none" stroke="#28a745" stroke-width="12" stroke-dasharray="339.292" stroke-dashoffset="339.292" />
